@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "534962381497",
+    "project_id": "msl-manager",
+    "storage_bucket": "msl-manager.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:534962381497:android:913f3b5db41fd3a453b168",
+        "android_client_info": {
+          "package_name": "com.example.msl_manager"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUz87_6l-D3Ok02T3_W0PJEKw6jj-SS60"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

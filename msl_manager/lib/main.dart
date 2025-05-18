@@ -1,6 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:msl_manager/firebase_options.dart';
 
-void main() {
+Future <void> main() async {
+  
+  // Initialize Firebase
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  
+
+  // Run the app
   runApp(const MainApp());
 }
 
