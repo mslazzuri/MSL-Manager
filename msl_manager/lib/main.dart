@@ -24,7 +24,6 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: LoginPage(),
       theme: appTheme,
 
       initialRoute: '/login',

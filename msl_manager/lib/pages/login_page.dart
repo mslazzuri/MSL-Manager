@@ -123,7 +123,9 @@ class LoginPageState extends State<LoginPage>
                   const SizedBox(height: 20),
                   
                   ElevatedButton(
-                    onPressed: () {Navigator.pushReplacementNamed(context, '/register');},
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/register');
+                    },
                     child: const Text('New user? Register'),
                   ),
                 ]
