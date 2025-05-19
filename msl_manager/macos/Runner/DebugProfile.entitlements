@@ -8,5 +8,8 @@
 	<true/>
 	<key>com.apple.security.network.server</key>
 	<true/>
+	<!-- filepath: macos/Runner/DebugProfile.entitlements -->
+	<key>com.apple.security.network.client</key>
+<true/>
 </dict>
 </plist>
