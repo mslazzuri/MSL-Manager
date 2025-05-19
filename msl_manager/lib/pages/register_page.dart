@@ -128,10 +128,25 @@ class RegisterPageState extends State<RegisterPage>
 
               const SizedBox(height: 10),
               
-              ElevatedButton(
-                onPressed: _handleRegister,
-                child: const Text('Register'),
-              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  
+                  ElevatedButton(
+                    onPressed: _handleRegister,
+                    child: const Text('Register'),
+                  ),
+                  
+                  const SizedBox(width: 10),
+
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushReplacementNamed(context, '/login');
+                    },
+                    child: const Text('Back to Login'),
+                  ),
+                ],
+              )
             ],
           )
         ),

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:msl_manager/widgets/custom_appbar.dart';
+import 'package:msl_manager/services/auth_service.dart';
 
 class HomePage extends StatefulWidget {
   
@@ -35,6 +36,16 @@ class HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text('Logged in as $userEmail', style: Theme.of(context).textTheme.displayMedium),
+            const SizedBox(height: 20),
+
+            ElevatedButton(
+              onPressed: () async {
+                await AuthService().signOut();
+                if (!mounted) return;
+                Navigator.pushReplacementNamed(context, '/login');
+              },
+              child: const Text('Sign Out'),
+            ),
           ],
         ),
       )
