@@ -4,6 +4,7 @@ import 'package:msl_manager/firebase_options.dart';
 import 'package:msl_manager/pages/login_page.dart';
 import 'package:msl_manager/themes/theme.dart'; 
 import 'package:msl_manager/pages/home_page.dart';
+import 'package:msl_manager/pages/register_page.dart'; 
 
 Future <void> main() async {
   
@@ -30,6 +31,7 @@ class MainApp extends StatelessWidget {
       routes: {
         '/login': (context) => const LoginPage(),
         '/home': (context) => const HomePage(),
+        '/register': (context) => const RegisterPage(),
       }
     );
   }
