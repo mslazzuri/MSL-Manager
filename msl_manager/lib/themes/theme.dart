@@ -37,6 +37,43 @@ final ThemeData appTheme = ThemeData(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(6),
       ),
+      fixedSize: const Size(150, 50),
     ),
-  )
+  ),
+
+  inputDecorationTheme: InputDecorationTheme(
+    filled: true,
+    fillColor: Colors.grey[200],
+    
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(6),
+      borderSide: BorderSide(
+        color: Colors.blueGrey[900]!,
+        width: 1,
+      ),  
+    ),
+
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(6),
+      borderSide: BorderSide(
+        color: Colors.blueGrey[900]!,
+        width: 2,
+      ),  
+    ),
+
+    hintStyle: GoogleFonts.sourceCodePro(
+      fontSize: 16,
+      fontWeight: FontWeight.w400,
+      color: Colors.grey[600],
+    ),
+  ),
+
+  scaffoldBackgroundColor: Colors.blueGrey[900],
+  snackBarTheme: SnackBarThemeData(
+    contentTextStyle: GoogleFonts.sourceCodePro(
+      fontSize: 12,
+      fontWeight: FontWeight.w400,
+      color: Colors.white,
+    ),
+  ),
 );
