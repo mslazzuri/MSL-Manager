@@ -8,6 +8,14 @@ class AuthService {
     return _auth.signInWithEmailAndPassword(email: email, password: password);
   }
 
+  Future<void> createServicesCollectionForUser(String userId) async
+  {
+    // Create a new collection for the user
+    await FirebaseFirestore.instance.collection('services').doc(userId).set({
+      'services': [],
+    });
+  }
+
   Future<UserCredential> register(
     String firstName,
     String lastName,
@@ -34,6 +42,9 @@ class AuthService {
           'phone': phone,
           'email': email,
         });
+
+        // Create the services collection for the user
+        await createServicesCollectionForUser(uid);
       }
 
       // 4. Return the credentialq
@@ -46,9 +57,108 @@ class AuthService {
     }    
   }
 
-
   // Sign out
   Future<void> signOut() async {
     await _auth.signOut();
+  }
+
+  // Getters
+
+  // User ID getter
+  String? get currentUserId {
+    User? user = _auth.currentUser;
+    return user?.uid;
+  }
+  
+  // Name getter
+  Future<String?> get currentUserName async {
+    User? user = _auth.currentUser;
+    if (user != null) {
+      DocumentSnapshot doc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+      if (doc.exists) {
+        return '${doc['firstName']} ${doc['lastName']}';
+      }
+    }
+    return null;
+  }
+
+  // Email getter
+  Future<String?> get currentUserEmail async {
+    User? user = _auth.currentUser;
+    if (user != null) {
+      DocumentSnapshot doc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+      if (doc.exists) {
+        return doc['email'];
+      }
+    }
+    return null;
+  }
+
+  // Phone getter
+  Future<String?> get currentUserPhone async {
+    User? user = _auth.currentUser;
+    if (user != null) {
+      DocumentSnapshot doc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+      if (doc.exists) {
+        return doc['phone'];
+      }
+    }
+    return null;
+  }
+
+  // Get services list
+  Future<List<Map<String, dynamic>>> getServicesList(String userId) async {
+    
+    final docSnapshot = await FirebaseFirestore.instance
+      .collection('services')
+      .doc(userId)
+      .get();
+
+    if (docSnapshot.exists) {
+      final data = docSnapshot.data();
+      final services = data?['services'];
+
+      if (services is List) {
+        return services.map<Map<String, dynamic>>((item) => Map<String, dynamic>.from(item)).toList();
+      }
+    }
+
+    return []; // Return an empty list if not found or malformed
+  }
+
+  // Add a service
+  Future<void> addServiceToUser({
+    required String userId,
+    required String serviceName,
+    required String email,
+    required String username,
+    required String password,
+  }) async {
+    final serviceData = {
+      'service': serviceName,
+      'email': email,
+      'username': username,
+      'password': password,
+    };
+
+    final userDocRef = FirebaseFirestore.instance.collection('services').doc(userId);
+
+    await FirebaseFirestore.instance.runTransaction((transaction) async {
+      final snapshot = await transaction.get(userDocRef);
+
+      if (!snapshot.exists) {
+        // If the user document doesn't exist, create it with the new service
+        transaction.set(userDocRef, {
+          'services': [serviceData],
+        });
+      } else {
+        // If it exists, append to the existing services array
+        final currentServices = List<Map<String, dynamic>>.from(snapshot.get('services') ?? []);
+        currentServices.add(serviceData);
+        transaction.update(userDocRef, {
+          'services': currentServices,
+        });
+      }
+    });
   }
 }

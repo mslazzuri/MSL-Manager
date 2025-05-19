@@ -21,7 +21,13 @@ final ThemeData appTheme = ThemeData(
     displaySmall: GoogleFonts.sourceCodePro(
       fontSize: 16,
       fontWeight: FontWeight.w400,
-      color: Colors.white
+      color: Colors.blueGrey[900]
+    ),
+
+    headlineMedium: GoogleFonts.sourceCodePro(
+      fontSize: 20,
+      fontWeight: FontWeight.w400,
+      color: Colors.blueGrey[900]
     ),
 
   ),

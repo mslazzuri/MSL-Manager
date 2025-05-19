@@ -50,6 +50,10 @@ class RegisterPageState extends State<RegisterPage>
         ),
       );
 
+      firstNameController.clear();
+      lastNameController.clear();
+      phoneController.clear();
+      confirmPasswordController.clear();
       emailController.clear();
       passwordController.clear();
     }
