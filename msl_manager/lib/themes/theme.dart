@@ -37,7 +37,7 @@ final ThemeData appTheme = ThemeData(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(6),
       ),
-      fixedSize: const Size(150, 50),
+      fixedSize: const Size(250, 50),
     ),
   ),
 

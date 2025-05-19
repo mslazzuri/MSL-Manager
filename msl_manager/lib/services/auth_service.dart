@@ -15,27 +15,35 @@ class AuthService {
     String email,
     String password,
   ) async {
-    // 1. Await the user creation
-    final UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
+    try{
+      
+      // 1. Await the user creation
+      final UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
 
-    // 2. Get the user ID
-    final String? uid = userCredential.user?.uid;
+      // 2. Get the user ID
+      final String? uid = userCredential.user?.uid;
 
-    // 3. Check if UID is valid before writing to Firestore
-    if (uid != null) {
-      await FirebaseFirestore.instance.collection('users').doc(uid).set({
-        'firstName': firstName,
-        'lastName': lastName,
-        'phone': phone,
-        'email': email,
-      });
+      // 3. Check if UID is valid before writing to Firestore
+      if (uid != null) {
+        await FirebaseFirestore.instance.collection('users').doc(uid).set({
+          'firstName': firstName,
+          'lastName': lastName,
+          'phone': phone,
+          'email': email,
+        });
+      }
+
+      // 4. Return the credentialq
+      return userCredential;
+
     }
-
-    // 4. Return the credentialq
-    return userCredential;
+    catch (e) {
+      // Handle any errors that occur during registration
+      throw Exception('Registration failed: $e');
+    }    
   }
 
 

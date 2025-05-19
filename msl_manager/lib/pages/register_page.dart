@@ -23,23 +23,24 @@ class RegisterPageState extends State<RegisterPage>
 
   void _handleRegister() async
   {
-    String email = emailController.text;
-    String password = passwordController.text;
     String firstName = firstNameController.text;
     String lastName = lastNameController.text;
-    String phoneText = phoneController.text;
+    String email = emailController.text;
+    String phone = phoneController.text;
+    String password = passwordController.text;
 
     try {
-      await authService.register(email, password, firstName, lastName, phoneText);
-      if (!mounted) return;
+      await authService.register(firstName, lastName, phone, email, password);
 
+      if(!mounted) return;
+      
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Registration successful! Welcome, $firstName!'),
         ),
       );
       
-      Navigator.pushReplacementNamed(context, '/home');
+      Navigator.pushReplacementNamed(context, '/login');
     } catch (e) {
       debugPrint('Registration failed: $e');
 
@@ -63,48 +64,76 @@ class RegisterPageState extends State<RegisterPage>
       body: Padding(
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
         child: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Logo(),
-                const SizedBox(height: 20),
-                Text('Register', style: Theme.of(context).textTheme.displayMedium),
-                const SizedBox(height: 20),
-                TextField(
-                  controller: firstNameController,
-                  decoration: const InputDecoration(labelText: 'First Name'),
-                ),
-                TextField(
-                  controller: lastNameController,
-                  decoration: const InputDecoration(labelText: 'Last Name'),
-                ),
-                TextField(
-                  controller: emailController,
-                  decoration: const InputDecoration(labelText: 'Email'),
-                ),
-                TextField(
-                  controller: phoneController,
-                  decoration: const InputDecoration(labelText: 'Phone'),
-                ),
-                TextField(
-                  controller: passwordController,
-                  obscureText: true,
-                  decoration: const InputDecoration(labelText: 'Password'),
-                ),
-                TextField(
-                  controller: confirmPasswordController,
-                  obscureText: true,
-                  decoration: const InputDecoration(labelText: 'Confirm Password'),
-                ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: _handleRegister,
-                  child: const Text('Register'),
-                ),
-              ],
-            ),
-          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              
+              Logo(),
+              const SizedBox(height: 20),
+
+              TextField(
+                controller: firstNameController,
+                decoration: InputDecoration(
+                    hintText: 'First Name',
+                  ),
+                cursorColor: Colors.blueGrey[900],
+              ),
+
+              const SizedBox(height: 10),
+              TextField(
+                controller: lastNameController,
+                decoration: InputDecoration(
+                    hintText: 'Last Name',
+                  ),
+                cursorColor: Colors.blueGrey[900],
+              ),
+
+              const SizedBox(height: 10),
+              TextField(
+                controller: emailController,
+                decoration: InputDecoration(
+                    hintText: 'Email',
+                  ),
+                cursorColor: Colors.blueGrey[900],
+              ),
+
+              const SizedBox(height: 10),
+              TextField(
+                controller: phoneController,
+                decoration: InputDecoration(
+                    hintText: 'Phone Number',
+                  ),
+                cursorColor: Colors.blueGrey[900],
+              ),
+
+              const SizedBox(height: 10),
+              TextField(
+                controller: passwordController,
+                decoration: InputDecoration(
+                    hintText: 'Password',
+                  ),
+                cursorColor: Colors.blueGrey[900],
+                obscureText: true,
+              ),
+
+              const SizedBox(height: 10),
+              TextField(
+                controller: confirmPasswordController,
+                decoration: InputDecoration(
+                    hintText: 'Confirm Password',
+                  ),
+                cursorColor: Colors.blueGrey[900],
+                obscureText: true,
+              ),
+
+              const SizedBox(height: 10),
+              
+              ElevatedButton(
+                onPressed: _handleRegister,
+                child: const Text('Register'),
+              ),
+            ],
+          )
         ),
       )
     );

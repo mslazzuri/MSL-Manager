@@ -44,7 +44,7 @@ class LoginPageState extends State<LoginPage>
   {
     final Size screenSize = MediaQuery.of(context).size;
     final double screenWidth = screenSize.width;
-    final double breakpoint = 500;
+    final double breakpoint = 600;
     // final double screenHeight = screenSize.height;
 
     final EdgeInsets inputFieldPadding = screenWidth > breakpoint
