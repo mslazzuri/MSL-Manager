@@ -30,6 +30,12 @@ final ThemeData appTheme = ThemeData(
       color: Colors.blueGrey[900]
     ),
 
+    headlineSmall: GoogleFonts.sourceCodePro(
+      fontSize: 12,
+      fontWeight: FontWeight.w400,
+      color: Colors.blueGrey[600]
+    )
+
   ),
 
   elevatedButtonTheme: ElevatedButtonThemeData(

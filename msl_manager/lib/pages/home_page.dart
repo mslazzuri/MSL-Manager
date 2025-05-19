@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:msl_manager/services/auth_service.dart';
 import 'package:msl_manager/widgets/custom_appbar.dart';
+import 'package:flutter/services.dart';
+
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -172,13 +174,12 @@ class HomePageState extends State<HomePage> {
             return Card(
 
               color: Colors.grey[200],
-              
+              elevation: 2,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(6),
                 side: BorderSide(
                   color: Colors.blueGrey[900]!,
                   width: 1,
-
                 ),
               ),
 
@@ -197,31 +198,92 @@ class HomePageState extends State<HomePage> {
                   ),
                 ),
               
-                title: Text(service['service'], style: Theme.of(context).textTheme.displaySmall),
+                title: RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: service['service'],
+                        style: Theme.of(context).textTheme.displaySmall,
+                      ),
+                      TextSpan(
+                        text: ' (${service['email']})',
+                        style: Theme.of(context).textTheme.headlineSmall,
+                      ),
+                    ],
+                  ),
+                ),
               
                 onTap: () {
                   // Navigate to a detail screen, show a dialog, or copy password, etc.
+
                   showDialog(
                     context: context,
-                    builder: (_) => AlertDialog(
-                      title: Text(service['service']),
-                      content: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Email: ${service['email']}'),
-                          Text('Username: ${service['username']}'),
-                          Text('Password: ${service['password']}'),
-                        ],
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(context),
-                          child: const Text('Close'),
+                    builder: (_) {
+                      bool obscurePassword = true;
+
+                      return StatefulBuilder(
+                        builder: (context, setState) => AlertDialog(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          title: Text(service['service'], style: Theme.of(context).textTheme.headlineMedium),
+                          backgroundColor: Colors.grey[50],
+                          content: SizedBox(
+                            width: 400,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Email: ${service['email']}', style: Theme.of(context).textTheme.displaySmall),
+                                SizedBox(height: 8,),
+                                Text('Username: ${service['username']}', style: Theme.of(context).textTheme.displaySmall),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        'Password: ${obscurePassword ? '•' * service['password'].length : service['password']}',
+                                        style: Theme.of(context).textTheme.displaySmall,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                    IconButton(
+                                      icon: Icon(obscurePassword ? Icons.visibility : Icons.visibility_off),
+                                      tooltip: obscurePassword ? 'Show password' : 'Hide password',
+                                      onPressed: () {
+                                        setState(() {
+                                          obscurePassword = !obscurePassword;
+                                        });
+                                      },
+                                    ),
+                                    IconButton(
+                                      icon: Icon(Icons.copy),
+                                      tooltip: 'Copy password',
+                                      onPressed: () {
+                                        Clipboard.setData(ClipboardData(text: service['password']));
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(content: Text('Password copied to clipboard')),
+                                        );
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          actions: [
+                            Center(
+                              child: ElevatedButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: Text('Close'),
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      );
+                    },
                   );
+
                 },
               ),
             );
