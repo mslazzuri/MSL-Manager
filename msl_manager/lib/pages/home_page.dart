@@ -41,7 +41,7 @@ class HomePageState extends State<HomePage> {
             ElevatedButton(
               onPressed: () async {
                 await AuthService().signOut();
-                if (!mounted) return;
+                if (!context.mounted) return;
                 Navigator.pushReplacementNamed(context, '/login');
               },
               child: const Text('Sign Out'),
