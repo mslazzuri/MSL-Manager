@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
+import 'package:msl_manager/services/encryption.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -108,22 +110,34 @@ class AuthService {
 
   // Get services list
   Future<List<Map<String, dynamic>>> getServicesList(String userId) async {
-    
     final docSnapshot = await FirebaseFirestore.instance
-      .collection('services')
-      .doc(userId)
-      .get();
+        .collection('services')
+        .doc(userId)
+        .get();
 
     if (docSnapshot.exists) {
       final data = docSnapshot.data();
       final services = data?['services'];
 
       if (services is List) {
-        return services.map<Map<String, dynamic>>((item) => Map<String, dynamic>.from(item)).toList();
+        return services.map<Map<String, dynamic>>((item) {
+          try {
+            return {
+              ...item,
+              'password': EncryptionHelper.decryptWord(item['password'], userId),
+              'email': EncryptionHelper.decryptWord(item['email'], userId),
+              'username': EncryptionHelper.decryptWord(item['username'], userId),
+              'service': EncryptionHelper.decryptWord(item['service'], userId),
+            };
+          } catch (e) {
+            debugPrint('Error decrypting service: $e');
+            return item; // fallback to raw encrypted data or skip this entry
+          }
+        }).toList();
       }
     }
 
-    return []; // Return an empty list if not found or malformed
+    return [];
   }
 
   // Add a service
@@ -134,11 +148,16 @@ class AuthService {
     required String username,
     required String password,
   }) async {
+    final encryptedService = EncryptionHelper.encryptWord(serviceName, userId);
+    final encryptedEmail = EncryptionHelper.encryptWord(email, userId);
+    final encryptedusername = EncryptionHelper.encryptWord(username, userId);
+    final encryptedPassword = EncryptionHelper.encryptWord(password, userId);
+
     final serviceData = {
-      'service': serviceName,
-      'email': email,
-      'username': username,
-      'password': password,
+      'service': encryptedService,
+      'email': encryptedEmail,
+      'username': encryptedusername,
+      'password': encryptedPassword,
     };
 
     final userDocRef = FirebaseFirestore.instance.collection('services').doc(userId);
