@@ -165,7 +165,7 @@ class HomePageState extends State<HomePage> {
       body: _isLoading
       ? const Center(child: CircularProgressIndicator())
       : _services.isEmpty
-      ? const Center(child: Text('No services added yet.'))
+      ? Center(child: Text('No services added yet.', style: Theme.of(context).textTheme.displaySmall))
       : ListView.builder(
           itemCount: _services.length,
           itemBuilder: (context, index) {
