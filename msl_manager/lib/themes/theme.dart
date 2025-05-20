@@ -53,6 +53,25 @@ final ThemeData appTheme = ThemeData(
     ),
   ),
 
+  textButtonTheme: TextButtonThemeData(
+    style: ElevatedButton.styleFrom(
+      backgroundColor: Colors.grey[200],
+      foregroundColor: Colors.blueGrey[900],
+      textStyle: GoogleFonts.sourceCodePro(
+        fontSize: 16,
+        fontWeight: FontWeight.w400,
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(6),
+        side: BorderSide(
+          color: Colors.blueGrey[900]!,
+          width: 1,
+        )
+      ),
+      fixedSize: const Size(250, 50),
+    )
+  ),
+
   inputDecorationTheme: InputDecorationTheme(
     filled: true,
     fillColor: Colors.grey[200],

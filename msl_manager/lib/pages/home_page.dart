@@ -147,30 +147,29 @@ class HomePageState extends State<HomePage> {
         title: Center(child: Text('Manage Service', style: Theme.of(context).textTheme.headlineMedium)),        
         backgroundColor: Colors.grey[50],
 
-        content: Center(
-          child: Column(
-            children: [
-              ElevatedButton(
-                onPressed: (){},
-                child: Text('Update'),
-              ),
-              
-              const SizedBox(height: 10),
-              
-              ElevatedButton(
-                onPressed: (){},
-                child: Text('Delete'),
-              ),
-
-              const SizedBox(height: 10),
-            ],
-          )
+        content:  Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ElevatedButton(
+              onPressed: (){},
+              child: Text('Update'),
+            ),
+            
+            const SizedBox(height: 10),
+            
+            ElevatedButton(
+              onPressed: (){},
+              child: Text('Delete'),
+            ),
+          ],
         ),
 
         actions: [
-          ElevatedButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text('Cancel'),
+          Center(
+            child: TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('Cancel'),
+            ),
           ),
         ]
       )
