@@ -180,4 +180,88 @@ class AuthService {
       }
     });
   }
+
+  // Update service
+  Future<void> udpateService({
+    required int index,
+    required String userId,
+    required String newService,
+    required String newEmail,
+    required String newUsername,
+    required String newPassword
+  }) async {
+    
+    try{
+      
+      final docRef = FirebaseFirestore.instance.collection('services').doc(userId);
+      final snapshot = await docRef.get();
+
+      if (!snapshot.exists) {
+        throw('Document does not exist.');
+      }
+
+      List<dynamic> services = snapshot.data()?['services'] ?? [];
+
+      if (index < 0 || index >= services.length) {
+        throw('Invalid service index.');
+      }
+
+      // Encrypt new data
+      final encryptedService = EncryptionHelper.encryptWord(newService, userId);
+      final encryptedEmail = EncryptionHelper.encryptWord(newEmail, userId);
+      final encryptedUsername = EncryptionHelper.encryptWord(newUsername, userId);
+      final encryptedPassword = EncryptionHelper.encryptWord(newPassword, userId);
+
+      // Update the specific service in the list
+      services[index] = {
+        'service': encryptedService,
+        'email': encryptedEmail,
+        'username': encryptedUsername,
+        'password': encryptedPassword,
+      };
+
+      // Write the whole updated array back
+      await docRef.update({
+        'services': services,
+      });
+
+      debugPrint('Service at index $index updated successfully.');
+
+    } catch (e)
+    {
+      debugPrint("Error updating service: $e");
+    }
+  }
+
+  Future<void> deleteService({
+    required String userId,
+    required int index,
+  }) async {
+    try {
+      final docRef = FirebaseFirestore.instance.collection('services').doc(userId);
+      final snapshot = await docRef.get();
+
+      if (!snapshot.exists) {
+        throw('Document does not exist.');
+      }
+
+      List<dynamic> services = List.from(snapshot.data()?['services'] ?? []);
+
+      if (index < 0 || index >= services.length) {
+        throw('Invalid service index.');
+      }
+
+      // REMOVE service at this index
+      services.removeAt(index);
+
+      // Write the whole updated array back
+      await docRef.update({
+        'services': services,
+      });
+
+      debugPrint('Service at index $index deleted successfully.');
+    } catch (e) {
+      debugPrint('Error deleting service: $e');
+    }
+  }
 }

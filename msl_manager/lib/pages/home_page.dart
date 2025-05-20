@@ -58,7 +58,7 @@ class HomePageState extends State<HomePage> {
       context: context,
       builder: (context) => AlertDialog(
         
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6), side: BorderSide(color: Colors.blueGrey[900]!, width: 1)),
         
         title: Text('Add New Service', style: Theme.of(context).textTheme.headlineMedium),
         
@@ -138,12 +138,27 @@ class HomePageState extends State<HomePage> {
     );
   }
 
-  void _showManageDialog(int index)
+  void _showManageDialog(int index, String service)
   {
+    final user = FirebaseAuth.instance.currentUser;
+    final String? uid = user?.uid;
+
+    // Check if we have an uid
+
+    if (uid == null)
+    {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('User not signed in. Please log in first.'),
+        ),
+      );
+      return;
+    }
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6), side: BorderSide(color: Colors.blueGrey[900]!, width: 1)),
         title: Center(child: Text('Manage Service', style: Theme.of(context).textTheme.headlineMedium)),        
         backgroundColor: Colors.grey[50],
 
@@ -151,14 +166,14 @@ class HomePageState extends State<HomePage> {
           mainAxisSize: MainAxisSize.min,
           children: [
             ElevatedButton(
-              onPressed: (){},
+              onPressed: ()=>_showUpdateDialog(index, uid, service),
               child: Text('Update'),
             ),
             
             const SizedBox(height: 10),
             
             ElevatedButton(
-              onPressed: (){},
+              onPressed: ()=>_showDeleteDialog(index, uid),
               child: Text('Delete'),
             ),
           ],
@@ -172,6 +187,165 @@ class HomePageState extends State<HomePage> {
             ),
           ),
         ]
+      )
+    );
+  }
+
+  void _showUpdateDialog(int index, String uid, String service)
+  {
+    
+    final TextEditingController newService = TextEditingController();
+    final TextEditingController newEmail = TextEditingController();
+    final TextEditingController newUsername = TextEditingController();
+    final TextEditingController newPassword = TextEditingController();
+    
+    Navigator.pop(context);
+    
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6), side: BorderSide(color: Colors.blueGrey[900]!, width: 1)),
+        title: Center(child: Text('Update', style: Theme.of(context).textTheme.headlineMedium)),        
+        backgroundColor: Colors.grey[50],
+
+        content:  Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              cursorColor: Colors.blueGrey[900],
+              decoration: InputDecoration(
+                hintText: 'New',
+              ),
+              controller: newService,
+            ),
+            
+            const SizedBox(height: 10,),
+            
+            TextField(
+              cursorColor: Colors.blueGrey[900],
+              decoration: InputDecoration(
+                hintText: 'New Email',
+              ),
+              controller: newEmail,
+            ),
+            
+            const SizedBox(height: 10,),
+            
+            TextField(
+              cursorColor: Colors.blueGrey[900],
+              decoration: InputDecoration(
+                hintText: 'New Username',
+              ),
+              controller: newUsername
+            ),
+            
+            const SizedBox(height: 10,),
+            
+            TextField(
+              cursorColor: Colors.blueGrey[900],
+              decoration: InputDecoration(
+                hintText: 'New Password',
+              ),
+              controller: newPassword
+            ),
+          ],
+        ),
+
+        actions: [
+          Center(
+            child: Row(
+              children: [
+                
+                ElevatedButton(
+                  onPressed: () async {
+                    await _authService.udpateService(
+                      index: index,
+                      userId: uid,
+                      newService: newService.text,
+                      newEmail: newEmail.text,
+                      newUsername: newUsername.text,
+                      newPassword: newPassword.text
+                    );
+
+                    if (!context.mounted) return;
+
+                    Navigator.pop(context); // Close update dialog
+
+                    _loadServices(); // Reload the updated list
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Service updated successfully!'))
+                    );
+                  },
+                  child: Text("Update")
+                ),
+
+                const SizedBox(width: 10,),
+                
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text('Cancel'),
+                ),
+              ],
+            ),
+          ),
+        ]
+      )
+    );
+  }
+
+  void _showDeleteDialog(int index, String uid)
+  {
+    Navigator.pop(context);
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6), side: BorderSide(color: Colors.blueGrey[900]!, width: 1)),
+        title: Center(child: Text('Delete', style: Theme.of(context).textTheme.headlineMedium)),        
+        backgroundColor: Colors.grey[50],
+
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            
+            Text(
+              "Are you sure you want to delete this service? This action is permanent.",
+              style: Theme.of(context).textTheme.displaySmall
+            ),
+            
+            const SizedBox(height: 10,),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () async {
+                    await _authService.deleteService(userId: uid, index: index);
+
+                    if (!context.mounted) return;
+
+                    Navigator.pop(context); // Close update dialog
+
+                    _loadServices(); // Reload the updated list
+
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Service deleted successfully!'))
+                    );
+                  },
+                  child: Text("Confirm")
+                ),
+
+                const SizedBox(width: 10,),
+                
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text('Cancel'),
+                ),
+              ],
+            )
+          ],
+        ),
       )
     );
   }
@@ -238,7 +412,7 @@ class HomePageState extends State<HomePage> {
               
                 trailing: IconButton(
                   icon: Icon(Icons.settings),
-                  onPressed:() => _showManageDialog(index),
+                  onPressed:() => _showManageDialog(index, service['service']),
                 ),
 
                 title: RichText(
@@ -266,9 +440,7 @@ class HomePageState extends State<HomePage> {
 
                       return StatefulBuilder(
                         builder: (context, setState) => AlertDialog(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6),
-                          ),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6), side: BorderSide(color: Colors.blueGrey[900]!, width: 1)),
                           title: Text(service['service'], style: Theme.of(context).textTheme.headlineMedium),
                           backgroundColor: Colors.grey[50],
                           content: SizedBox(
