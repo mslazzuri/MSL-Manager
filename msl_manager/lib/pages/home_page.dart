@@ -138,6 +138,45 @@ class HomePageState extends State<HomePage> {
     );
   }
 
+  void _showManageDialog(int index)
+  {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+        title: Center(child: Text('Manage Service', style: Theme.of(context).textTheme.headlineMedium)),        
+        backgroundColor: Colors.grey[50],
+
+        content: Center(
+          child: Column(
+            children: [
+              ElevatedButton(
+                onPressed: (){},
+                child: Text('Update'),
+              ),
+              
+              const SizedBox(height: 10),
+              
+              ElevatedButton(
+                onPressed: (){},
+                child: Text('Delete'),
+              ),
+
+              const SizedBox(height: 10),
+            ],
+          )
+        ),
+
+        actions: [
+          ElevatedButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text('Cancel'),
+          ),
+        ]
+      )
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -198,6 +237,11 @@ class HomePageState extends State<HomePage> {
                   ),
                 ),
               
+                trailing: IconButton(
+                  icon: Icon(Icons.settings),
+                  onPressed:() => _showManageDialog(index),
+                ),
+
                 title: RichText(
                   text: TextSpan(
                     children: [
