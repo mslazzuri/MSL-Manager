@@ -18,7 +18,18 @@ Future <void> main() async {
     setWindowTitle('MSL Manager');
     setWindowMinSize(const Size(800, 600));
     setWindowMaxSize(const Size(4000, 1200));
-    setWindowFrame(Rect.fromLTRB(0, 0, 800, 800));
+    // Center the window on the screen with size 600x800
+    final screen = await getCurrentScreen();
+    if (screen != null) {
+      final screenFrame = screen.visibleFrame;
+      final width = 800.0;
+      final height = 600.0;
+      final left = screenFrame.left + (screenFrame.width - width) / 2;
+      final top = screenFrame.top + (screenFrame.height - height) / 2;
+      setWindowFrame(Rect.fromLTWH(left, top, width, height));
+    } else {
+      setWindowFrame(Rect.fromLTWH(0, 0, 800, 600));
+    }
   }  
   
   // Initialize Firebase
