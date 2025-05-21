@@ -23,12 +23,49 @@ class RegisterPageState extends State<RegisterPage>
 
   void _handleRegister() async
   {
-    String firstName = firstNameController.text;
-    String lastName = lastNameController.text;
-    String email = emailController.text;
-    String phone = phoneController.text;
-    String password = passwordController.text;
+    String firstName = firstNameController.text.trim();
+    String lastName = lastNameController.text.trim();
+    String email = emailController.text.trim();
+    String phone = phoneController.text.trim();
+    String password = passwordController.text.trim();
+    String confirmPassword = confirmPasswordController.text.trim();
 
+    // Check if any field is empty
+    if (firstName.isEmpty ||
+        lastName.isEmpty ||
+        email.isEmpty ||
+        phone.isEmpty ||
+        password.isEmpty ||
+        confirmPassword.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Please fill in all fields.'),
+        ),
+      );
+      return;
+    }
+
+    // Check if email is valid
+    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    if (!emailRegex.hasMatch(email)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Please enter a valid email address.'),
+        ),
+      );
+      return;
+    }
+
+    // Check if passwords match
+    if (password != confirmPassword) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Passwords do not match.'),
+        ),
+      );
+      return;
+    }
+    
     try {
       await authService.register(firstName, lastName, phone, email, password);
 
@@ -78,8 +115,8 @@ class RegisterPageState extends State<RegisterPage>
               TextField(
                 controller: firstNameController,
                 decoration: InputDecoration(
-                    hintText: 'First Name',
-                  ),
+                  hintText: 'First Name',
+                ),
                 cursorColor: Colors.blueGrey[900],
               ),
 
