@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:msl_manager/widgets/logo.dart';
 import 'package:msl_manager/services/auth_service.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
+
 
 class RegisterPage extends StatefulWidget
 {
@@ -65,6 +67,15 @@ class RegisterPageState extends State<RegisterPage>
       );
       return;
     }
+
+    // Check the phone number format
+    final phoneRegex = RegExp(r'^\+\d{10,15}$');
+    if (!phoneRegex.hasMatch(phone)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please enter a valid phone number with country code (e.g. +15551234567).')),
+      );
+      return;
+    }
     
     try {
       await authService.register(firstName, lastName, phone, email, password);
@@ -116,6 +127,10 @@ class RegisterPageState extends State<RegisterPage>
                 controller: firstNameController,
                 decoration: InputDecoration(
                   hintText: 'First Name',
+                  prefixIcon: Icon(
+                    Icons.person_4,
+                    color: Colors.blueGrey[900]!,
+                  ),
                 ),
                 cursorColor: Colors.blueGrey[900],
               ),
@@ -125,6 +140,7 @@ class RegisterPageState extends State<RegisterPage>
                 controller: lastNameController,
                 decoration: InputDecoration(
                     hintText: 'Last Name',
+                    prefixIcon: Icon(Icons.person_4_outlined, color: Colors.blueGrey[900]!,),
                   ),
                 cursorColor: Colors.blueGrey[900],
               ),
@@ -134,17 +150,23 @@ class RegisterPageState extends State<RegisterPage>
                 controller: emailController,
                 decoration: InputDecoration(
                     hintText: 'Email',
+                    prefixIcon: Icon(Icons.email, color: Colors.blueGrey[900]!,),
                   ),
                 cursorColor: Colors.blueGrey[900],
               ),
 
               const SizedBox(height: 10),
-              TextField(
+              IntlPhoneField(
                 controller: phoneController,
-                decoration: InputDecoration(
-                    hintText: 'Phone Number',
-                  ),
                 cursorColor: Colors.blueGrey[900],
+                decoration: InputDecoration(
+                  hintText: 'Phone Number',
+                  border: OutlineInputBorder(),
+                ),
+                initialCountryCode: 'US',
+                onChanged: (phone) {
+                  // E.164 format
+                },
               ),
 
               const SizedBox(height: 10),
@@ -152,6 +174,7 @@ class RegisterPageState extends State<RegisterPage>
                 controller: passwordController,
                 decoration: InputDecoration(
                     hintText: 'Password',
+                    prefixIcon: Icon(Icons.lock, color: Colors.blueGrey[900]!,),
                   ),
                 cursorColor: Colors.blueGrey[900],
                 obscureText: true,
@@ -162,6 +185,7 @@ class RegisterPageState extends State<RegisterPage>
                 controller: confirmPasswordController,
                 decoration: InputDecoration(
                     hintText: 'Confirm Password',
+                    prefixIcon: Icon(Icons.lock_rounded, color: Colors.blueGrey[900]!),
                   ),
                 cursorColor: Colors.blueGrey[900],
                 obscureText: true,

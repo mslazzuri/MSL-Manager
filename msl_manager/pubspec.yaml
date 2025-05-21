@@ -15,6 +15,7 @@ dependencies:
   cloud_firestore: ^5.6.7
   encrypt: ^5.0.3
   crypto: ^3.0.6
+  intl_phone_field: ^3.2.0
 
 dev_dependencies:
   flutter_test:

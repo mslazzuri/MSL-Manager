@@ -3,6 +3,12 @@ import 'package:google_fonts/google_fonts.dart';
 
 final ThemeData appTheme = ThemeData(
   useMaterial3: true,
+
+  colorScheme: ColorScheme.fromSeed(
+    seedColor: Colors.black87,
+    primary: Colors.blueGrey[900]!,
+    secondary: Colors.blueGrey[900]!,
+  ),
   
   textTheme: TextTheme(
    
@@ -106,5 +112,27 @@ final ThemeData appTheme = ThemeData(
       fontWeight: FontWeight.w400,
       color: Colors.white,
     ),
+  ),
+
+  dialogTheme: DialogTheme(
+    backgroundColor: Colors.grey[50],
+    titleTextStyle: GoogleFonts.sourceCodePro(
+      fontSize: 20,
+      fontWeight: FontWeight.w400,
+      color: Colors.blueGrey[900]
+    ),
+    contentTextStyle: GoogleFonts.sourceCodePro(
+      fontSize: 16,
+      fontWeight: FontWeight.w400,
+      color: Colors.white,
+    ),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(6),
+      side: BorderSide(
+        color: Colors.blueGrey[900]!,
+        width: 1,
+      )
+    ),
+
   ),
 );
