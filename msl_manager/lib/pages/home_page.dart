@@ -357,7 +357,9 @@ class HomePageState extends State<HomePage> {
         actions: [
           IconButton(
             icon: const Icon(Icons.person),
-            onPressed: () {}
+            onPressed: () {
+              Navigator.pushNamed(context, '/profile');
+            },
           ),
           IconButton(
             icon: const Icon(Icons.logout),
