@@ -441,7 +441,7 @@ class HomePageState extends State<HomePage> {
                           title: Text(service['service'], style: Theme.of(context).textTheme.headlineMedium),
                           backgroundColor: Colors.grey[50],
                           content: SizedBox(
-                            width: 400,
+                            width: 600,
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.start,

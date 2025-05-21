@@ -5,13 +5,23 @@ import 'package:msl_manager/pages/login_page.dart';
 import 'package:msl_manager/themes/theme.dart'; 
 import 'package:msl_manager/pages/home_page.dart';
 import 'package:msl_manager/pages/register_page.dart'; 
+import 'package:window_size/window_size.dart';
+import 'dart:io';
 
 Future <void> main() async {
   
-  // Initialize Firebase
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  // Set the window size for desktop platforms
+  if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
+    setWindowTitle('MSL Manager');
+    setWindowMinSize(const Size(800, 600));
+    setWindowMaxSize(const Size(4000, 1200));
+    setWindowFrame(Rect.fromLTRB(0, 0, 800, 800));
+  }  
   
+  // Initialize Firebase
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   // Run the app
   runApp(const MainApp());
