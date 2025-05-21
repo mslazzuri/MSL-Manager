@@ -138,8 +138,7 @@ class HomePageState extends State<HomePage> {
     );
   }
 
-  void _showManageDialog(int index, String service)
-  {
+  void _showManageDialog(int index, Map<String, dynamic> service) {
     final user = FirebaseAuth.instance.currentUser;
     final String? uid = user?.uid;
 
@@ -191,13 +190,11 @@ class HomePageState extends State<HomePage> {
     );
   }
 
-  void _showUpdateDialog(int index, String uid, String service)
-  {
-    
-    final TextEditingController newService = TextEditingController();
-    final TextEditingController newEmail = TextEditingController();
-    final TextEditingController newUsername = TextEditingController();
-    final TextEditingController newPassword = TextEditingController();
+  void _showUpdateDialog(int index, String uid, Map<String, dynamic> service) {
+    final TextEditingController newService = TextEditingController(text: service['service']);
+    final TextEditingController newEmail = TextEditingController(text: service['email']);
+    final TextEditingController newUsername = TextEditingController(text: service['username']);
+    final TextEditingController newPassword = TextEditingController(text: service['password']);
     
     Navigator.pop(context);
     
@@ -214,7 +211,7 @@ class HomePageState extends State<HomePage> {
             TextField(
               cursorColor: Colors.blueGrey[900],
               decoration: InputDecoration(
-                hintText: 'New',
+                hintText: 'New Service Name',
               ),
               controller: newService,
             ),
@@ -314,7 +311,7 @@ class HomePageState extends State<HomePage> {
               style: Theme.of(context).textTheme.displaySmall
             ),
             
-            const SizedBox(height: 10,),
+            const SizedBox(height: 50),
 
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -412,7 +409,7 @@ class HomePageState extends State<HomePage> {
               
                 trailing: IconButton(
                   icon: Icon(Icons.settings),
-                  onPressed:() => _showManageDialog(index, service['service']),
+                  onPressed:() => _showManageDialog(index, service),
                 ),
 
                 title: RichText(

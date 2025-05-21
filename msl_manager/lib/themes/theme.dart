@@ -5,7 +5,7 @@ final ThemeData appTheme = ThemeData(
   useMaterial3: true,
 
   colorScheme: ColorScheme.fromSeed(
-    seedColor: Colors.black87,
+    seedColor: Colors.blueGrey[900]!,
     primary: Colors.blueGrey[900]!,
     secondary: Colors.blueGrey[900]!,
   ),
