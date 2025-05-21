@@ -122,14 +122,54 @@ class LoginPageState extends State<LoginPage>
         
                   const SizedBox(height: 20),
                   
-                  ElevatedButton(
+                  TextButton(
                     onPressed: () {
                       Navigator.pushReplacementNamed(context, '/register');
                     },
                     child: Text('New user? Register'),
                   ),
                 ]
-              )
+              ),
+
+              const SizedBox(height: 20),
+
+              TextButton(
+                onPressed: () async {
+                  final email = emailController.text.trim();
+                  if (email.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Please enter your email to reset password.')),
+                    );
+                    return;
+                  }
+                  try {
+                    await authService.resetPassword(email);
+                    if (!context.mounted) return;
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Password reset email sent! Check your inbox.')),
+                    );
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Failed to send reset email.')),
+                    );
+                  }
+                },
+                style: TextButton.styleFrom(
+                  backgroundColor: Colors.grey[50],
+                  foregroundColor: Colors.blueGrey[900],
+                  textStyle: Theme.of(context).textTheme.bodySmall,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6),
+                    side: BorderSide(
+                      color: Colors.transparent,
+                      width: 0,
+                    ),
+                  ),
+                  fixedSize: const Size(250, 50),
+                ),
+                child: Text('Forgot Password?'),
+              ),
+
             ],
           ),
         ),

@@ -264,4 +264,14 @@ class AuthService {
       debugPrint('Error deleting service: $e');
     }
   }
+
+  Future<void> resetPassword(String email) async {
+  try {
+    await _auth.sendPasswordResetEmail(email: email);
+    debugPrint('Password reset email sent to $email');
+  } catch (e) {
+    debugPrint('Error sending password reset email: $e');
+    rethrow;
+  }
+}
 }
