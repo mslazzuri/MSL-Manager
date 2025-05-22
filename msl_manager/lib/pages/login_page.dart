@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:msl_manager/widgets/logo.dart';
 import 'package:msl_manager/services/auth_service.dart';
+import 'package:msl_manager/widgets/hover_scale_text.dart';
 
 class LoginPage extends StatefulWidget
 {
@@ -183,11 +184,12 @@ class LoginPageState extends State<LoginPage>
                     ),
                   ),
                   fixedSize: const Size(250, 50),
+                  overlayColor: Colors.grey[50],
                 ),
-
-                
-
-                child: Text('Forgot Password?'),
+                child: HoverScaleText(
+                  text: 'Forgot Password?',
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
               ),
 
             ],
