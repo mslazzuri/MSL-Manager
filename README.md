@@ -20,37 +20,37 @@ Feel free to fork this project, modify it, and adapt it to your own needs!
 ## Screenshots
 
 <p align="center">
-  <img src="assets/screenshots/loginPage.png" alt="Login Page" width="430"/>
+  <img src="msl_manager/assets/screenshots/loginPage.png" alt="Login Page" width="430"/>
   <br><b>Login Page</b>
 </p>
 
 <p align="center">
-  <img src="assets/screenshots/registerPage.png" alt="Register Page" width="430"/>
+  <img src="msl_manager/assets/screenshots/registerPage.png" alt="Register Page" width="430"/>
   <br><b>Register Page</b>
 </p>
 
 <p align="center">
-  <img src="assets/screenshots/homePage.png" alt="Home Page" width="430"/>
+  <img src="msl_manager/assets/screenshots/homePage.png" alt="Home Page" width="430"/>
   <br><b>Home Page</b>
 </p>
 
 <p align="center">
-  <img src="assets/screenshots/addServiceDialog.png" alt="Add Service Dialog" width="430"/>
+  <img src="msl_manager/assets/screenshots/addServiceDialog.png" alt="Add Service Dialog" width="430"/>
   <br><b>Add Service Dialog</b>
 </p>
 
 <p align="center">
-  <img src="assets/screenshots/updateDialog.png" alt="Update Dialog" width="430"/>
+  <img src="msl_manager/assets/screenshots/updateDialog.png" alt="Update Dialog" width="430"/>
   <br><b>Update Dialog</b>
 </p>
 
 <p align="center">
-  <img src="assets/screenshots/passwordGeneratorPage.png" alt="Password Generator Page" width="430"/>
+  <img src="msl_manager/assets/screenshots/passwordGeneratorPage.png" alt="Password Generator Page" width="430"/>
   <br><b>Password Generator Page</b>
 </p>
 
 <p align="center">
-  <img src="assets/screenshots/profilePage.png" alt="Profile Page" width="430"/>
+  <img src="msl_manager/assets/screenshots/profilePage.png" alt="Profile Page" width="430"/>
   <br><b>Profile Page</b>
 </p>
 
