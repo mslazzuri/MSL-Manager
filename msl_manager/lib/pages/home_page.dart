@@ -364,6 +364,189 @@ class HomePageState extends State<HomePage> {
     );
   }
 
+  void _showSearchDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        TextEditingController searchController = TextEditingController();
+        List<Map<String, dynamic>> filteredServices = [];
+        return StatefulBuilder(
+          builder: (context, setState) {
+            void filterServices(String query) {
+              setState(() {
+                filteredServices = _services
+                    .where((service) => service['service']
+                        .toString()
+                        .toLowerCase()
+                        .contains(query.toLowerCase()))
+                    .toList();
+              });
+            }
+
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(6),
+                side: BorderSide(color: Colors.blueGrey[900]!, width: 1),
+              ),
+              title: Text('Search Service', style: Theme.of(context).textTheme.headlineMedium),
+              backgroundColor: Colors.grey[50],
+              content: SizedBox(
+                width: 400,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TextField(
+                      controller: searchController,
+                      decoration: InputDecoration(
+                        hintText: 'Type service name...',
+                        prefixIcon: Icon(Icons.search),
+                      ),
+                      onChanged: filterServices,
+                      autofocus: true,
+                    ),
+                    const SizedBox(height: 16),
+                    
+                    filteredServices.isEmpty && searchController.text.isNotEmpty
+                    ? Text('No matches found.', style: Theme.of(context).textTheme.displaySmall)
+                    : SizedBox(
+                        height: 200,
+                        child: ListView.builder(
+                          itemCount: filteredServices.length,
+                          itemBuilder: (context, index) {
+                            final service = filteredServices[index];
+                            return Card(
+                              color: Colors.grey[200],
+                              elevation: 2,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(6),
+                                side: BorderSide(
+                                  color: Colors.blueGrey[900]!,
+                                  width: 1,
+                                ),
+                              ),
+                              margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                              child: ListTile(
+                                leading: CircleAvatar(
+                                  backgroundColor: Colors.blueGrey[100],
+                                  child: Text(
+                                    service['service'][0].toUpperCase(),
+                                    style: TextStyle(
+                                      color: Colors.blueGrey[900],
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                title: RichText(
+                                  text: TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text: service['service'],
+                                        style: Theme.of(context).textTheme.displaySmall,
+                                      ),
+                                      TextSpan(
+                                        text: ' (${service['email']})',
+                                        style: Theme.of(context).textTheme.headlineSmall,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                onTap: () {
+                                  Navigator.pop(context);
+                                  _showServiceDialog(service);
+                                },
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+              actions: [
+                Center(
+                  child: TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: Text('Close'),
+                  ),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void _showServiceDialog(Map<String, dynamic> service) {
+    showDialog(
+      context: context,
+      builder: (_) {
+        bool obscurePassword = true;
+        return StatefulBuilder(
+          builder: (context, setState) => AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(6),
+              side: BorderSide(color: Colors.blueGrey[900]!, width: 1),
+            ),
+            title: Text(service['service'], style: Theme.of(context).textTheme.headlineMedium),
+            backgroundColor: Colors.grey[50],
+            content: SizedBox(
+              width: 600,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Email: ${service['email']}', style: Theme.of(context).textTheme.displaySmall),
+                  SizedBox(height: 8,),
+                  Text('Username: ${service['username']}', style: Theme.of(context).textTheme.displaySmall),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          'Password: ${obscurePassword ? '•' * service['password'].length : service['password']}',
+                          style: Theme.of(context).textTheme.displaySmall,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      IconButton(
+                        icon: Icon(obscurePassword ? Icons.visibility : Icons.visibility_off),
+                        tooltip: obscurePassword ? 'Show password' : 'Hide password',
+                        onPressed: () {
+                          setState(() {
+                            obscurePassword = !obscurePassword;
+                          });
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.copy),
+                        tooltip: 'Copy password',
+                        onPressed: () {
+                          Clipboard.setData(ClipboardData(text: service['password']));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Password copied to clipboard')),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            actions: [
+              Center(
+                child: ElevatedButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: Text('Close'),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -372,6 +555,10 @@ class HomePageState extends State<HomePage> {
       
       appBar: CustomAppBar(title: "$_userName's wallet", 
         actions: [
+          IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: _showSearchDialog,
+          ),
           IconButton(
             icon: const Icon(Icons.person),
             onPressed: () {
@@ -446,76 +633,7 @@ class HomePageState extends State<HomePage> {
                   ),
                 ),
               
-                onTap: () {
-                  // Navigate to a detail screen, show a dialog, or copy password, etc.
-
-                  showDialog(
-                    context: context,
-                    builder: (_) {
-                      bool obscurePassword = true;
-
-                      return StatefulBuilder(
-                        builder: (context, setState) => AlertDialog(
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6), side: BorderSide(color: Colors.blueGrey[900]!, width: 1)),
-                          title: Text(service['service'], style: Theme.of(context).textTheme.headlineMedium),
-                          backgroundColor: Colors.grey[50],
-                          content: SizedBox(
-                            width: 600,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Email: ${service['email']}', style: Theme.of(context).textTheme.displaySmall),
-                                SizedBox(height: 8,),
-                                Text('Username: ${service['username']}', style: Theme.of(context).textTheme.displaySmall),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Expanded(
-                                      child: Text(
-                                        'Password: ${obscurePassword ? '•' * service['password'].length : service['password']}',
-                                        style: Theme.of(context).textTheme.displaySmall,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                    IconButton(
-                                      icon: Icon(obscurePassword ? Icons.visibility : Icons.visibility_off),
-                                      tooltip: obscurePassword ? 'Show password' : 'Hide password',
-                                      onPressed: () {
-                                        setState(() {
-                                          obscurePassword = !obscurePassword;
-                                        });
-                                      },
-                                    ),
-                                    IconButton(
-                                      icon: Icon(Icons.copy),
-                                      tooltip: 'Copy password',
-                                      onPressed: () {
-                                        Clipboard.setData(ClipboardData(text: service['password']));
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          SnackBar(content: Text('Password copied to clipboard')),
-                                        );
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                          actions: [
-                            Center(
-                              child: ElevatedButton(
-                                onPressed: () => Navigator.pop(context),
-                                child: Text('Close'),
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  );
-
-                },
+                onTap: () => _showServiceDialog(service),
               ),
             );
 
