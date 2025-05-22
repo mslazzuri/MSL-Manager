@@ -140,6 +140,11 @@ class AuthService {
     return [];
   }
 
+  // Get user data
+  Future<User?> get currentUser async {
+    return _auth.currentUser;
+  }
+
   // Add a service
   Future<void> addServiceToUser({
     required String userId,
@@ -266,12 +271,19 @@ class AuthService {
   }
 
   Future<void> resetPassword(String email) async {
-  try {
-    await _auth.sendPasswordResetEmail(email: email);
-    debugPrint('Password reset email sent to $email');
-  } catch (e) {
-    debugPrint('Error sending password reset email: $e');
-    rethrow;
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+      debugPrint('Password reset email sent to $email');
+    } catch (e) {
+      debugPrint('Error sending password reset email: $e');
+      rethrow;
+    }
   }
-}
+
+  Future<void> deleteUserData(String uid) async {
+    final firestore = FirebaseFirestore.instance;
+    // Delete user document
+    await firestore.collection('users').doc(uid).delete();
+    await firestore.collection('services').doc(uid).delete();
+  }
 }
