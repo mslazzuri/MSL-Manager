@@ -17,6 +17,25 @@ class HomePageState extends State<HomePage> {
   String? _userName;
   List<Map<String, dynamic>> _services = [];
   bool _isLoading = true;
+  bool _addServiceObscureText = true;
+  bool _updateServiceObscureText = true;
+
+
+  void _togglePasswordVisibility(int field)
+  {
+    setState(() {
+      if (field == 1)
+      {
+        _addServiceObscureText = !_addServiceObscureText;
+      }
+      else
+      {
+        _updateServiceObscureText = !_updateServiceObscureText;
+      }  
+
+    });
+    
+  }
 
   @override
   void initState() {
@@ -99,9 +118,16 @@ class HomePageState extends State<HomePage> {
                 controller: passwordController,
                 decoration: InputDecoration(
                     hintText: 'Password',
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _addServiceObscureText? Icons.visibility_off : Icons.visibility
+                      ),
+                      color: Colors.blueGrey[900],
+                      onPressed: () => _togglePasswordVisibility(1),
+                    )
                   ),
                 cursorColor: Colors.blueGrey[900],
-                obscureText: true,
+                obscureText: _addServiceObscureText,
               ),
             ],
           ),
@@ -242,7 +268,15 @@ class HomePageState extends State<HomePage> {
               cursorColor: Colors.blueGrey[900],
               decoration: InputDecoration(
                 hintText: 'New Password',
+                prefixIcon: IconButton(
+                  icon: Icon(
+                    _updateServiceObscureText? Icons.visibility_off : Icons.visibility
+                  ),
+                  color: Colors.blueGrey[900],
+                  onPressed: () => _togglePasswordVisibility(2),
+                ), 
               ),
+              obscureText: _updateServiceObscureText,
               controller: newPassword
             ),
           ],

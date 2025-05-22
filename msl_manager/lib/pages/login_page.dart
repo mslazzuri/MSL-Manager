@@ -15,6 +15,14 @@ class LoginPageState extends State<LoginPage>
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final AuthService authService = AuthService();
+  bool _obscureText = true; // True by default
+
+  void _togglePasswordVisibility()
+  {
+    setState(() {
+      _obscureText = !_obscureText;
+    });
+  }
 
   void _handleLogin() async
   {
@@ -83,8 +91,15 @@ class LoginPageState extends State<LoginPage>
                   controller: passwordController,
                   decoration: InputDecoration(
                     hintText: 'Password',
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _obscureText? Icons.visibility_off : Icons.visibility,
+                        color: Colors.blueGrey[900],
+                      ),
+                      onPressed: _togglePasswordVisibility,
+                    )
                   ),
-                  obscureText: true,
+                  obscureText: _obscureText,
                   cursorColor: Colors.blueGrey[900],
                 ),
               ),
@@ -154,9 +169,11 @@ class LoginPageState extends State<LoginPage>
                     );
                   }
                 },
+                
                 style: TextButton.styleFrom(
                   backgroundColor: Colors.grey[50],
                   foregroundColor: Colors.blueGrey[900],
+                  elevation: 0,
                   textStyle: Theme.of(context).textTheme.bodySmall,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(6),
@@ -167,6 +184,9 @@ class LoginPageState extends State<LoginPage>
                   ),
                   fixedSize: const Size(250, 50),
                 ),
+
+                
+
                 child: Text('Forgot Password?'),
               ),
 

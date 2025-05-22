@@ -20,8 +20,27 @@ class RegisterPageState extends State<RegisterPage>
   final phoneController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
+  bool _obscureText1 = true; // For 'Password' field
+  bool _obscureText2 = true; // For 'Confirm Password; field
   
   final AuthService authService = AuthService();
+
+  void _togglePasswordVisibility(int field)
+  {
+    
+    if (field == 1)
+    {
+      setState(() {
+        _obscureText1 = !_obscureText1;
+      });
+    }
+    else
+    {
+      setState(() {
+        _obscureText2 = !_obscureText2;
+      });
+    }
+  }
 
   void _handleRegister() async
   {
@@ -175,6 +194,13 @@ class RegisterPageState extends State<RegisterPage>
                 decoration: InputDecoration(
                     hintText: 'Password',
                     prefixIcon: Icon(Icons.lock, color: Colors.blueGrey[900]!,),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _obscureText1? Icons.visibility_off : Icons.visibility
+                      ),
+                      color: Colors.blueGrey[900],
+                      onPressed: ()=> _togglePasswordVisibility(1),
+                    )
                   ),
                 cursorColor: Colors.blueGrey[900],
                 obscureText: true,
@@ -186,9 +212,16 @@ class RegisterPageState extends State<RegisterPage>
                 decoration: InputDecoration(
                     hintText: 'Confirm Password',
                     prefixIcon: Icon(Icons.lock_rounded, color: Colors.blueGrey[900]!),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _obscureText2? Icons.visibility_off : Icons.visibility
+                      ),
+                      color: Colors.blueGrey[900],
+                      onPressed: ()=> _togglePasswordVisibility(2),
+                    )
                   ),
                 cursorColor: Colors.blueGrey[900],
-                obscureText: true,
+                obscureText: _obscureText2,
               ),
 
               const SizedBox(height: 10),
