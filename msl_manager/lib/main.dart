@@ -5,6 +5,7 @@ import 'package:msl_manager/pages/login_page.dart';
 import 'package:msl_manager/themes/theme.dart'; 
 import 'package:msl_manager/pages/home_page.dart';
 import 'package:msl_manager/pages/profile_page.dart';
+import 'package:msl_manager/pages/password_generator_page.dart';
 import 'package:msl_manager/pages/register_page.dart'; 
 import 'package:window_size/window_size.dart';
 import 'dart:io';
@@ -54,6 +55,7 @@ class MainApp extends StatelessWidget {
         '/home': (context) => const HomePage(),
         '/register': (context) => const RegisterPage(),
         '/profile': (context) => const ProfilePage(),
+        '/password-generator': (context) => const PasswordGeneratorPage(),
       }
     );
   }

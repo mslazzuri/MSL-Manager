@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:msl_manager/services/auth_service.dart';
 import 'package:msl_manager/widgets/custom_appbar.dart';
 import 'package:flutter/services.dart';
@@ -521,24 +522,76 @@ class HomePageState extends State<HomePage> {
           },
         ),
 
-        floatingActionButton: FloatingActionButton(
-          onPressed: _showAddServiceDialog,
-          
-          backgroundColor: Colors.grey[200],
-          foregroundColor: Colors.blueGrey[900],
-          hoverColor: Colors.grey[300],
-          
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(50),
-            side: BorderSide(
-              color: Colors.blueGrey[900]!,
-              width: 1,
-            ),
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.fromLTRB(0, 0, 70, 0),
+          child: Row(
+            // mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Tooltip(
+                message: 'Add new service',
 
+                textStyle: GoogleFonts.sourceCodePro(
+                  color: Colors.grey[50],
+                ),
+
+                verticalOffset: 30,
+
+                child: FloatingActionButton(
+                  onPressed: _showAddServiceDialog,
+                  
+                  backgroundColor: Colors.blueGrey[900],
+                  foregroundColor: Colors.grey[200],
+                  hoverColor: Colors.blueGrey[800],
+                  
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50),
+                    side: BorderSide(
+                      color: Colors.grey[200]!,
+                      width: 2,
+                    ),
+                  ),
+                  
+                  child: Icon(Icons.add),
+                ),
+              ),
+              
+              const SizedBox(width: 10),
+              
+              Tooltip(
+                
+                message: "Generate password",
+
+                textStyle: GoogleFonts.sourceCodePro(
+                  color: Colors.grey[50],
+                ),
+
+                verticalOffset: 30,
+                
+                child: FloatingActionButton(
+                  onPressed: () => Navigator.pushNamed(context, '/password-generator'),
+                
+                  backgroundColor: Colors.blueGrey[900],
+                  foregroundColor: Colors.grey[200],
+                  hoverColor: Colors.blueGrey[800],
+                  
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50),
+                    side: BorderSide(
+                      color: Colors.grey[200]!,
+                      width: 2,
+                    ),
+                  ),
+                  
+                  child: Icon(Icons.lock),
+                ),
+              ),
+            ],
           ),
-          
-          child: Icon(Icons.add),
         ),
+        
+
+
     );
   }
 }
