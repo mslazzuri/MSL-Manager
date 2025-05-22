@@ -148,6 +148,16 @@ flutter build macos --release
 - `cpp/` or `native/` - Native modules (C++, C, CMake)
 - `test/` - Unit and widget tests
 
+## Download
+
+You can download the latest version of MSL-Manager for MacOS from the [Releases page](https://github.com/mslazzuri/MSL-Manager/releases/latest).
+
+[![Download Latest](https://img.shields.io/github/v/release/mslazzuri/MSL-Manager?label=Download)](https://github.com/mslazzuri/MSL-Manager/releases/latest)
+
+---
+
+After downloading, open the `.dmg` file and move MSL-Manager to your Applications folder.
+
 ## Contributing
 
 Contributions are welcome! Please open issues or submit pull requests for new features, bug fixes, or enhancements.

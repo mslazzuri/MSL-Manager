@@ -20,37 +20,37 @@ Feel free to fork this project, modify it, and adapt it to your own needs!
 ## Screenshots
 
 <p align="center">
-  <img src="assets/screenshots/loginPage.png" alt="Login Page" width="430"/>
+  <img src="msl_manager/assets/screenshots/loginPage.png" alt="Login Page" width="430"/>
   <br><b>Login Page</b>
 </p>
 
 <p align="center">
-  <img src="assets/screenshots/registerPage.png" alt="Register Page" width="430"/>
+  <img src="msl_manager/assets/screenshots/registerPage.png" alt="Register Page" width="430"/>
   <br><b>Register Page</b>
 </p>
 
 <p align="center">
-  <img src="assets/screenshots/homePage.png" alt="Home Page" width="430"/>
+  <img src="msl_manager/assets/screenshots/homePage.png" alt="Home Page" width="430"/>
   <br><b>Home Page</b>
 </p>
 
 <p align="center">
-  <img src="assets/screenshots/addServiceDialog.png" alt="Add Service Dialog" width="430"/>
+  <img src="msl_manager/assets/screenshots/addServiceDialog.png" alt="Add Service Dialog" width="430"/>
   <br><b>Add Service Dialog</b>
 </p>
 
 <p align="center">
-  <img src="assets/screenshots/updateDialog.png" alt="Update Dialog" width="430"/>
+  <img src="msl_manager/assets/screenshots/updateDialog.png" alt="Update Dialog" width="430"/>
   <br><b>Update Dialog</b>
 </p>
 
 <p align="center">
-  <img src="assets/screenshots/passwordGeneratorPage.png" alt="Password Generator Page" width="430"/>
+  <img src="msl_manager/assets/screenshots/passwordGeneratorPage.png" alt="Password Generator Page" width="430"/>
   <br><b>Password Generator Page</b>
 </p>
 
 <p align="center">
-  <img src="assets/screenshots/profilePage.png" alt="Profile Page" width="430"/>
+  <img src="msl_manager/assets/screenshots/profilePage.png" alt="Profile Page" width="430"/>
   <br><b>Profile Page</b>
 </p>
 
@@ -147,6 +147,16 @@ flutter build macos --release
 - `macos/` - macOS-specific files
 - `cpp/` or `native/` - Native modules (C++, C, CMake)
 - `test/` - Unit and widget tests
+
+## Download
+
+You can download the latest version of MSL-Manager for MacOS from the [Releases page](https://github.com/mslazzuri/MSL-Manager/releases/latest).
+
+[![Download Latest](https://img.shields.io/github/v/release/mslazzuri/MSL-Manager?label=Download)](https://github.com/mslazzuri/MSL-Manager/releases/latest)
+
+---
+
+After downloading, open the `.dmg` file and move MSL-Manager to your Applications folder.
 
 ## Contributing
 
