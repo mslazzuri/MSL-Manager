@@ -17,25 +17,6 @@ class HomePageState extends State<HomePage> {
   String? _userName;
   List<Map<String, dynamic>> _services = [];
   bool _isLoading = true;
-  bool _addServiceObscureText = true;
-  bool _updateServiceObscureText = true;
-
-
-  void _togglePasswordVisibility(int field)
-  {
-    setState(() {
-      if (field == 1)
-      {
-        _addServiceObscureText = !_addServiceObscureText;
-      }
-      else
-      {
-        _updateServiceObscureText = !_updateServiceObscureText;
-      }  
-
-    });
-    
-  }
 
   @override
   void initState() {
@@ -75,92 +56,96 @@ class HomePageState extends State<HomePage> {
 
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6), side: BorderSide(color: Colors.blueGrey[900]!, width: 1)),
-        
-        title: Text('Add New Service', style: Theme.of(context).textTheme.headlineMedium),
-        
-        backgroundColor: Colors.grey[50],
-        
-        content: SingleChildScrollView(
-          child: Column(
-            children: [
-              const SizedBox(height: 10),
-              TextField(
-                controller: serviceController,
-                decoration: InputDecoration(
-                    hintText: 'Service (e.g. Netflix)',
+      builder: (context) {
+        bool addServiceObscureText = true;
+        return StatefulBuilder(
+          builder: (context, setState) => AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(6),
+              side: BorderSide(color: Colors.blueGrey[900]!, width: 1),
+            ),
+            title: Text('Add New Service', style: Theme.of(context).textTheme.headlineMedium),
+            backgroundColor: Colors.grey[50],
+            content: SingleChildScrollView(
+              child: Column(
+                children: [
+                  const SizedBox(height: 10),
+                  TextField(
+                    controller: serviceController,
+                    decoration: InputDecoration(
+                      hintText: 'Service (e.g. Netflix)',
+                    ),
+                    cursorColor: Colors.blueGrey[900],
                   ),
-                cursorColor: Colors.blueGrey[900],
-              ),
-              
-              const SizedBox(height: 10),
-              TextField(
-                controller: emailController,
-                decoration: InputDecoration(
-                    hintText: 'Email (e.g. email@example.com)',
+                  const SizedBox(height: 10),
+                  TextField(
+                    controller: emailController,
+                    decoration: InputDecoration(
+                      hintText: 'Email (e.g. email@example.com)',
+                    ),
+                    cursorColor: Colors.blueGrey[900],
                   ),
-                cursorColor: Colors.blueGrey[900],
-              ),
-              
-              const SizedBox(height: 10),
-              TextField(
-                controller: usernameController,
-                decoration: InputDecoration(
-                    hintText: 'Username (e.g. user123)',
+                  const SizedBox(height: 10),
+                  TextField(
+                    controller: usernameController,
+                    decoration: InputDecoration(
+                      hintText: 'Username (e.g. user123)',
+                    ),
+                    cursorColor: Colors.blueGrey[900],
                   ),
-                cursorColor: Colors.blueGrey[900],
-              ),
-              
-              const SizedBox(height: 10),
-              TextField(
-                controller: passwordController,
-                decoration: InputDecoration(
-                    hintText: 'Password',
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _addServiceObscureText? Icons.visibility_off : Icons.visibility
+                  const SizedBox(height: 10),
+                  TextField(
+                    controller: passwordController,
+                    decoration: InputDecoration(
+                      hintText: 'Password',
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          addServiceObscureText ? Icons.visibility_off : Icons.visibility,
+                        ),
+                        color: Colors.blueGrey[900],
+                        onPressed: () {
+                          setState(() {
+                            addServiceObscureText = !addServiceObscureText;
+                          });
+                        },
                       ),
-                      color: Colors.blueGrey[900],
-                      onPressed: () => _togglePasswordVisibility(1),
-                    )
+                    ),
+                    cursorColor: Colors.blueGrey[900],
+                    obscureText: addServiceObscureText,
                   ),
-                cursorColor: Colors.blueGrey[900],
-                obscureText: _addServiceObscureText,
+                ],
+              ),
+            ),
+            actions: [
+              ElevatedButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text('Cancel'),
+              ),
+              ElevatedButton(
+                onPressed: () async {
+                  final user = FirebaseAuth.instance.currentUser;
+                  if (user != null) {
+                    await _authService.addServiceToUser(
+                      userId: user.uid,
+                      serviceName: serviceController.text,
+                      email: emailController.text,
+                      username: usernameController.text,
+                      password: passwordController.text,
+                    );
+
+                    if (!context.mounted) return;
+
+                    Navigator.pop(context);
+
+                    _loadServices(); // Refresh list
+                  }
+                },
+                child: Text('Add'),
               ),
             ],
           ),
-        ),
-        
-        actions: [
-          ElevatedButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text('Cancel'),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              final user = FirebaseAuth.instance.currentUser;
-              if (user != null) {
-                await _authService.addServiceToUser(
-                  userId: user.uid,
-                  serviceName: serviceController.text,
-                  email: emailController.text,
-                  username: usernameController.text,
-                  password: passwordController.text,
-                );
-
-                if(!context.mounted) return;
-                
-                Navigator.pop(context);
-                
-                _loadServices(); // Refresh list
-              }
-            },
-            child: Text('Add'),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 
@@ -221,107 +206,104 @@ class HomePageState extends State<HomePage> {
     final TextEditingController newEmail = TextEditingController(text: service['email']);
     final TextEditingController newUsername = TextEditingController(text: service['username']);
     final TextEditingController newPassword = TextEditingController(text: service['password']);
-    
+
     Navigator.pop(context);
-    
+
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6), side: BorderSide(color: Colors.blueGrey[900]!, width: 1)),
-        title: Center(child: Text('Update', style: Theme.of(context).textTheme.headlineMedium)),        
-        backgroundColor: Colors.grey[50],
-
-        content:  Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              cursorColor: Colors.blueGrey[900],
-              decoration: InputDecoration(
-                hintText: 'New Service Name',
-              ),
-              controller: newService,
+      builder: (context) {
+        bool updateServiceObscureText = true;
+        return StatefulBuilder(
+          builder: (context, setState) => AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(6),
+              side: BorderSide(color: Colors.blueGrey[900]!, width: 1),
             ),
-            
-            const SizedBox(height: 10,),
-            
-            TextField(
-              cursorColor: Colors.blueGrey[900],
-              decoration: InputDecoration(
-                hintText: 'New Email',
-              ),
-              controller: newEmail,
-            ),
-            
-            const SizedBox(height: 10,),
-            
-            TextField(
-              cursorColor: Colors.blueGrey[900],
-              decoration: InputDecoration(
-                hintText: 'New Username',
-              ),
-              controller: newUsername
-            ),
-            
-            const SizedBox(height: 10,),
-            
-            TextField(
-              cursorColor: Colors.blueGrey[900],
-              decoration: InputDecoration(
-                hintText: 'New Password',
-                prefixIcon: IconButton(
-                  icon: Icon(
-                    _updateServiceObscureText? Icons.visibility_off : Icons.visibility
-                  ),
-                  color: Colors.blueGrey[900],
-                  onPressed: () => _togglePasswordVisibility(2),
-                ), 
-              ),
-              obscureText: _updateServiceObscureText,
-              controller: newPassword
-            ),
-          ],
-        ),
-
-        actions: [
-          Center(
-            child: Row(
+            title: Center(child: Text('Update', style: Theme.of(context).textTheme.headlineMedium)),
+            backgroundColor: Colors.grey[50],
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                
-                ElevatedButton(
-                  onPressed: () async {
-                    await _authService.udpateService(
-                      index: index,
-                      userId: uid,
-                      newService: newService.text,
-                      newEmail: newEmail.text,
-                      newUsername: newUsername.text,
-                      newPassword: newPassword.text
-                    );
-
-                    if (!context.mounted) return;
-
-                    Navigator.pop(context); // Close update dialog
-
-                    _loadServices(); // Reload the updated list
-
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Service updated successfully!'))
-                    );
-                  },
-                  child: Text("Update")
+                TextField(
+                  cursorColor: Colors.blueGrey[900],
+                  decoration: InputDecoration(
+                    hintText: 'New Service Name',
+                  ),
+                  controller: newService,
                 ),
-
-                const SizedBox(width: 10,),
-                
-                TextButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: Text('Cancel'),
+                const SizedBox(height: 10,),
+                TextField(
+                  cursorColor: Colors.blueGrey[900],
+                  decoration: InputDecoration(
+                    hintText: 'New Email',
+                  ),
+                  controller: newEmail,
+                ),
+                const SizedBox(height: 10,),
+                TextField(
+                  cursorColor: Colors.blueGrey[900],
+                  decoration: InputDecoration(
+                    hintText: 'New Username',
+                  ),
+                  controller: newUsername,
+                ),
+                const SizedBox(height: 10,),
+                TextField(
+                  cursorColor: Colors.blueGrey[900],
+                  decoration: InputDecoration(
+                    hintText: 'New Password',
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        updateServiceObscureText ? Icons.visibility_off : Icons.visibility,
+                      ),
+                      color: Colors.blueGrey[900],
+                      onPressed: () {
+                        setState(() {
+                          updateServiceObscureText = !updateServiceObscureText;
+                        });
+                      },
+                    ),
+                  ),
+                  obscureText: updateServiceObscureText,
+                  controller: newPassword,
                 ),
               ],
             ),
+            actions: [
+              Center(
+                child: Row(
+                  children: [
+                    ElevatedButton(
+                      onPressed: () async {
+                        await _authService.udpateService(
+                          index: index,
+                          userId: uid,
+                          newService: newService.text,
+                          newEmail: newEmail.text,
+                          newUsername: newUsername.text,
+                          newPassword: newPassword.text,
+                        );
+                        if (!context.mounted) return;
+                        Navigator.pop(context); // Close update dialog
+                        _loadServices(); // Reload the updated list
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Service updated successfully!'))
+                        );
+                      },
+                      child: Text("Update"),
+                    ),
+                    const SizedBox(width: 10,),
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: Text('Cancel'),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-        ]
-      )
+        );
+      },
     );
   }
 
