@@ -19,9 +19,83 @@ Feel free to fork this project, modify it, and adapt it to your own needs!
 
 ## Screenshots
 
-<!-- Add screenshots here if available. Example: -->
-<!-- ![Login Screen](screenshots/login.png) -->
-<!-- ![Password List](screenshots/password_list.png) -->
+<p align="center">
+  <img src="assets/screenshots/loginPage.png" alt="Login Page" width="430"/>
+  <br><b>Login Page</b>
+</p>
+
+<p align="center">
+  <img src="assets/screenshots/registerPage.png" alt="Register Page" width="430"/>
+  <br><b>Register Page</b>
+</p>
+
+<p align="center">
+  <img src="assets/screenshots/homePage.png" alt="Home Page" width="430"/>
+  <br><b>Home Page</b>
+</p>
+
+<p align="center">
+  <img src="assets/screenshots/addServiceDialog.png" alt="Add Service Dialog" width="430"/>
+  <br><b>Add Service Dialog</b>
+</p>
+
+<p align="center">
+  <img src="assets/screenshots/updateDialog.png" alt="Update Dialog" width="430"/>
+  <br><b>Update Dialog</b>
+</p>
+
+<p align="center">
+  <img src="assets/screenshots/passwordGeneratorPage.png" alt="Password Generator Page" width="430"/>
+  <br><b>Password Generator Page</b>
+</p>
+
+<p align="center">
+  <img src="assets/screenshots/profilePage.png" alt="Profile Page" width="430"/>
+  <br><b>Profile Page</b>
+</p>
+
+## Security & Encryption
+
+All sensitive user data, such as passwords and credentials, are encrypted on the client side before being stored in the cloud. This ensures that even if the database is compromised, the data remains protected.
+
+With this approach, the private key and decrypted passwords can only be accessed if the client’s device itself is compromised (e.g., by malware).
+
+### How Encryption Works
+
+- **AES-256 Encryption:**  
+  The app uses the [AES (Advanced Encryption Standard)](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard) algorithm with a 256-bit key for encrypting all sensitive fields. AES is a widely adopted symmetric encryption standard known for its security and performance.
+
+- **Key Derivation:**  
+  The encryption key is derived from the user's unique ID (`userId`) using the SHA-256 hash function. This produces a 32-byte (256-bit) key, ensuring that each user has a unique encryption key.
+
+- **Random IV (Initialization Vector):**  
+  For every encryption operation, a new random 16-byte IV is generated. This ensures that encrypting the same value multiple times will produce different ciphertexts, enhancing security.
+
+- **Storage Format:**  
+  The encrypted data is stored as a string in the format:  
+  ```
+  <IV in base64>:<Encrypted value in base64>
+  ```
+  This allows the app to retrieve both the IV and the ciphertext for decryption.
+
+- **Decryption:**  
+  To decrypt, the app splits the stored string to extract the IV and ciphertext, then uses the same key derivation process to reconstruct the AES key and decrypt the data.
+
+### Example
+
+When a password is saved:
+1. The app derives a key from the user's ID using SHA-256.
+2. It generates a random IV.
+3. It encrypts the password using AES-256 with the derived key and IV.
+4. It stores the IV and encrypted password together.
+
+When a password is retrieved:
+1. The app derives the same key from the user's ID.
+2. It extracts the IV and ciphertext from storage.
+3. It decrypts the ciphertext using AES-256 with the derived key and IV.
+
+> **Note:**  
+> The encryption and decryption are handled entirely on the client side. The server (Firebase) never sees unencrypted sensitive data or the user's encryption key.
 
 ## Getting Started
 
