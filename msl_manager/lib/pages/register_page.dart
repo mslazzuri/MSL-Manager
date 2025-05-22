@@ -22,6 +22,8 @@ class RegisterPageState extends State<RegisterPage>
   final confirmPasswordController = TextEditingController();
   bool _obscureText1 = true; // For 'Password' field
   bool _obscureText2 = true; // For 'Confirm Password; field
+  bool _isPhoneValid = false;
+  String? _fullPhoneNumber;
   
   final AuthService authService = AuthService();
 
@@ -47,7 +49,7 @@ class RegisterPageState extends State<RegisterPage>
     String firstName = firstNameController.text.trim();
     String lastName = lastNameController.text.trim();
     String email = emailController.text.trim();
-    String phone = phoneController.text.trim();
+    String phone =  _fullPhoneNumber ?? phoneController.text.trim();
     String password = passwordController.text.trim();
     String confirmPassword = confirmPasswordController.text.trim();
 
@@ -88,10 +90,9 @@ class RegisterPageState extends State<RegisterPage>
     }
 
     // Check the phone number format
-    final phoneRegex = RegExp(r'^\+\d{10,15}$');
-    if (!phoneRegex.hasMatch(phone)) {
+    if (phone.isEmpty || !_isPhoneValid) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please enter a valid phone number with country code (e.g. +15551234567).')),
+        SnackBar(content: Text('Please enter a valid phone number with country code (e.g. 5551234567).')),
       );
       return;
     }
@@ -184,7 +185,10 @@ class RegisterPageState extends State<RegisterPage>
                 ),
                 initialCountryCode: 'US',
                 onChanged: (phone) {
-                  // E.164 format
+                  _fullPhoneNumber = phone.completeNumber;
+                  _isPhoneValid = phone.isValidNumber();
+
+                  setState(() {});
                 },
               ),
 
@@ -203,7 +207,7 @@ class RegisterPageState extends State<RegisterPage>
                     )
                   ),
                 cursorColor: Colors.blueGrey[900],
-                obscureText: true,
+                obscureText: _obscureText1,
               ),
 
               const SizedBox(height: 10),
