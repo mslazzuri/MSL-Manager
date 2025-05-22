@@ -8,13 +8,13 @@ Feel free to fork this project, modify it, and adapt it to your own needs!
 
 - **Cross-platform UI:** Built with Flutter for a smooth and native-like experience on macOS.
 - **Secure Storage:** Utilizes Firebase for encrypted cloud storage of passwords.
+- **Password Generator:** Generate strong, random passwords directly within the app.
 - **Search and Organize:** Easily search, filter, and organize your credentials.
 - **Clipboard Management:** Quick copy to clipboard with automatic clearing for added safety.
 - **Backup and Restore:** Cloud sync to ensure your passwords are never lost.
 
 ## In Progress
 
-- **Password Generator:** Generate strong, random passwords directly within the app.
 - **Biometric Authentication:** (Planned) Support for Face ID/Touch ID on macOS devices.
 
 ## Screenshots
