@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class HoverScaleText extends StatefulWidget {
   final String text;
   final TextStyle? style;
-  const HoverScaleText({required this.text, this.style});
+  const HoverScaleText({super.key, required this.text, this.style});
 
   @override
   State<HoverScaleText> createState() => HoverScaleTextState();
