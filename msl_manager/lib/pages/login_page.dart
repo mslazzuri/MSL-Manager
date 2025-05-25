@@ -94,14 +94,15 @@ class LoginPageState extends State<LoginPage>
                     hintText: 'Password',
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _obscureText? Icons.visibility_off : Icons.visibility,
+                        _obscureText ? Icons.visibility_off : Icons.visibility,
                         color: Colors.blueGrey[900],
                       ),
                       onPressed: _togglePasswordVisibility,
-                    )
+                    ),
                   ),
                   obscureText: _obscureText,
                   cursorColor: Colors.blueGrey[900],
+                  onSubmitted: (_) => _handleLogin(),
                 ),
               ),
               const SizedBox(height: 20),
