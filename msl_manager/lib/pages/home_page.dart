@@ -656,6 +656,7 @@ class HomePageState extends State<HomePage> {
                 verticalOffset: 30,
 
                 child: FloatingActionButton(
+                  heroTag: 'add-service',
                   onPressed: _showAddServiceDialog,
                   
                   backgroundColor: Colors.blueGrey[900],
@@ -687,6 +688,7 @@ class HomePageState extends State<HomePage> {
                 verticalOffset: 30,
                 
                 child: FloatingActionButton(
+                  heroTag: 'generate-password',
                   onPressed: () => Navigator.pushNamed(context, '/password-generator'),
                 
                   backgroundColor: Colors.blueGrey[900],
