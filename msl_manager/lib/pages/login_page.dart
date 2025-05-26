@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:msl_manager/widgets/logo.dart';
 import 'package:msl_manager/services/auth_service.dart';
 import 'package:msl_manager/widgets/hover_scale_text.dart';
+import 'package:msl_manager/themes/globals.dart' as globals;
 
 class LoginPage extends StatefulWidget
 {
@@ -62,7 +63,7 @@ class LoginPageState extends State<LoginPage>
 
     return Scaffold(
       
-      backgroundColor: Colors.grey[50],
+      backgroundColor: globals.backgroundColor,
       
       body: Padding(
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
@@ -82,7 +83,8 @@ class LoginPageState extends State<LoginPage>
                   decoration: InputDecoration(
                     hintText: 'Email',
                   ),
-                  cursorColor: Colors.blueGrey[900],
+                  cursorColor: globals.cursorColor,
+                  style: Theme.of(context).textTheme.displaySmall,
                 ),
               ),
               const SizedBox(height: 20),
@@ -95,14 +97,15 @@ class LoginPageState extends State<LoginPage>
                     suffixIcon: IconButton(
                       icon: Icon(
                         _obscureText ? Icons.visibility_off : Icons.visibility,
-                        color: Colors.blueGrey[900],
+                        color: globals.textDark,
                       ),
                       onPressed: _togglePasswordVisibility,
                     ),
                   ),
                   obscureText: _obscureText,
-                  cursorColor: Colors.blueGrey[900],
+                  cursorColor: globals.neonGreen,
                   onSubmitted: (_) => _handleLogin(),
+                  style: Theme.of(context).textTheme.displaySmall,
                 ),
               ),
               const SizedBox(height: 20),
@@ -173,23 +176,20 @@ class LoginPageState extends State<LoginPage>
                 },
                 
                 style: TextButton.styleFrom(
-                  backgroundColor: Colors.grey[50],
-                  foregroundColor: Colors.blueGrey[900],
+                  backgroundColor: globals.backgroundColor,
                   elevation: 0,
                   textStyle: Theme.of(context).textTheme.bodySmall,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(6),
-                    side: BorderSide(
-                      color: Colors.transparent,
-                      width: 0,
-                    ),
                   ),
                   fixedSize: const Size(250, 50),
-                  overlayColor: Colors.grey[50],
+                  overlayColor: globals.backgroundColor,
                 ),
                 child: HoverScaleText(
                   text: 'Forgot Password?',
-                  style: Theme.of(context).textTheme.bodySmall,
+                  style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                    color: globals.neonGreen,
+                  ),
                 ),
               ),
 

@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:msl_manager/themes/globals.dart';
 
 final ThemeData appTheme = ThemeData(
   useMaterial3: true,
 
   colorScheme: ColorScheme.fromSeed(
-    seedColor: Colors.blueGrey[900]!,
-    primary: Colors.blueGrey[900]!,
-    secondary: Colors.blueGrey[900]!,
+    seedColor: background,
+    primary: black,
+    secondary: lightBackground,
+    tertiary: neonGreen,
   ),
   
   textTheme: TextTheme(
@@ -15,39 +17,50 @@ final ThemeData appTheme = ThemeData(
     displayLarge: GoogleFonts.sourceCodePro(
       fontSize: 30,
       fontWeight: FontWeight.w400,
-      color: Colors.white
+      color: gray,
     ),
     
     displayMedium: GoogleFonts.sourceCodePro(
       fontSize: 20,
       fontWeight: FontWeight.w400,
-      color: Colors.white
+      color: gray
     ),
     
     displaySmall: GoogleFonts.sourceCodePro(
       fontSize: 16,
       fontWeight: FontWeight.w400,
-      color: Colors.blueGrey[900]
+      color: gray
+    ),
+
+    headlineLarge: GoogleFonts.sourceCodePro(
+      fontSize: 30,
+      fontWeight: FontWeight.w400,
+      color: black
     ),
 
     headlineMedium: GoogleFonts.sourceCodePro(
       fontSize: 20,
       fontWeight: FontWeight.w400,
-      color: Colors.blueGrey[900]
+      color: black
     ),
 
     headlineSmall: GoogleFonts.sourceCodePro(
-      fontSize: 12,
+      fontSize: 16,
       fontWeight: FontWeight.w400,
-      color: Colors.blueGrey[600]
-    )
+      color: black
+    ),
 
+    bodySmall: GoogleFonts.sourceCodePro(
+      fontSize: 14,
+      fontWeight: FontWeight.w400,
+      color: black
+    ),
   ),
 
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
-      backgroundColor: Colors.blueGrey[900],
-      foregroundColor: Colors.white,
+      backgroundColor: primaryButtonFillColor,
+      foregroundColor: primaryButtonTextColor,
       textStyle: GoogleFonts.sourceCodePro(
         fontSize: 16,
         fontWeight: FontWeight.w400,
@@ -61,18 +74,16 @@ final ThemeData appTheme = ThemeData(
 
   textButtonTheme: TextButtonThemeData(
     style: ElevatedButton.styleFrom(
-      backgroundColor: Colors.grey[200],
-      foregroundColor: Colors.blueGrey[900],
+      backgroundColor: secondaryButtonFillColor,
+      foregroundColor: primaryButtonTextColor,
+      overlayColor: black,
       textStyle: GoogleFonts.sourceCodePro(
         fontSize: 16,
         fontWeight: FontWeight.w400,
       ),
+
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(6),
-        side: BorderSide(
-          color: Colors.blueGrey[900]!,
-          width: 1,
-        )
       ),
       fixedSize: const Size(250, 50),
     )
@@ -80,32 +91,41 @@ final ThemeData appTheme = ThemeData(
 
   inputDecorationTheme: InputDecorationTheme(
     filled: true,
-    fillColor: Colors.grey[200],
-    
-    border: OutlineInputBorder(
+    fillColor: inputTextFillColor,
+
+    labelStyle: GoogleFonts.sourceCodePro(
+      fontSize: 16,
+      fontWeight: FontWeight.w400,
+      color: textDark,
+    ),
+
+    prefixIconColor: lightBackground,
+    suffixIconColor: lightBackground,
+
+    enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(6),
       borderSide: BorderSide(
-        color: Colors.blueGrey[900]!,
-        width: 1,
-      ),  
+        color: inputTextBorderColor,
+        width: 0,
+      ),
     ),
 
     focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(6),
       borderSide: BorderSide(
-        color: Colors.blueGrey[900]!,
+        color: inputTextBorderColor,
         width: 2,
       ),  
     ),
-
+    
     hintStyle: GoogleFonts.sourceCodePro(
       fontSize: 16,
       fontWeight: FontWeight.w400,
-      color: Colors.grey[600],
+      color: lightBackground,
     ),
   ),
 
-  scaffoldBackgroundColor: Colors.blueGrey[900],
+  scaffoldBackgroundColor: background,
   snackBarTheme: SnackBarThemeData(
     contentTextStyle: GoogleFonts.sourceCodePro(
       fontSize: 12,
@@ -115,11 +135,11 @@ final ThemeData appTheme = ThemeData(
   ),
 
   dialogTheme: DialogTheme(
-    backgroundColor: Colors.grey[50],
+    backgroundColor: background,
     titleTextStyle: GoogleFonts.sourceCodePro(
       fontSize: 20,
       fontWeight: FontWeight.w400,
-      color: Colors.blueGrey[900]
+      color: neonGreen
     ),
     contentTextStyle: GoogleFonts.sourceCodePro(
       fontSize: 16,
@@ -128,10 +148,6 @@ final ThemeData appTheme = ThemeData(
     ),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(6),
-      side: BorderSide(
-        color: Colors.blueGrey[900]!,
-        width: 1,
-      )
     ),
 
   ),

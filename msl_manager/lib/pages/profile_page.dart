@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'package:msl_manager/services/auth_service.dart';
+import 'package:msl_manager/themes/globals.dart';
 import 'package:msl_manager/widgets/custom_appbar.dart';
 import 'package:msl_manager/widgets/hover_scale_text.dart';
 
@@ -143,7 +144,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ],
       ),
-      backgroundColor: Colors.grey[50],
+      backgroundColor: background,
       body: _loading
           ? const Center(child: CircularProgressIndicator())
           : Padding(
@@ -160,37 +161,71 @@ class _ProfilePageState extends State<ProfilePage> {
                           color: Colors.transparent,
                           shape: BoxShape.circle,
                           border: Border.all(
-                            color: Colors.blueGrey[900]!,
-                            width: 2,
+                            color: avatarBorderColor,
+                            width: 4,
                           ),
                         ),
                         child: CircleAvatar(
-                        radius: 40,
-                        backgroundColor: Colors.blueGrey[100],
+                        radius: 55,
+                        backgroundColor: avatarFillColor,
                         child: Text(
                           _name != null && _name!.isNotEmpty ? _name![0].toUpperCase() : '?',
                           style: TextStyle(
                           fontSize: 36,
-                          color: Colors.blueGrey[900]!,
+                          color: avatarTextColor,
                           fontWeight: FontWeight.bold,
                           ),
                         ),
                         ),
                       ),
                       const SizedBox(height: 10),
-                      Text(_name ?? '-', style: Theme.of(context).textTheme.headlineMedium),
+                      Text(
+                        _name ?? '-',
+                        style: Theme.of(context).textTheme.displayLarge?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: avatarTextColor,
+                        )
+                      ),
                       ],
                     ),
                     ),
 
                   
 
+                  const SizedBox(height: 10),
+
+                  Center(
+                    child: Divider(
+                      color: black,
+                      thickness: 1,
+                      indent: 50,
+                      endIndent: 50,
+                    ),
+                  ),
+                  
+                  const SizedBox(height: 10),
+
+                  Center(child: Text(
+                    'Email:',
+                    style: Theme.of(context).textTheme.displaySmall?.copyWith(fontWeight: FontWeight.bold)
+                  )),
+                  
+                  Center(child: Text(
+                    _email ?? '-',
+                    style: Theme.of(context).textTheme.displaySmall
+                  )),
                   const SizedBox(height: 16),
-                  Text('Email:', style: Theme.of(context).textTheme.headlineSmall),
-                  Text(_email ?? '-', style: Theme.of(context).textTheme.displaySmall),
-                  const SizedBox(height: 16),
-                  Text('Phone:', style: Theme.of(context).textTheme.headlineSmall),
-                  Text(_phone ?? '-', style: Theme.of(context).textTheme.displaySmall),
+                  
+                  Center(child: Text(
+                    'Phone:',
+                    style: Theme.of(context).textTheme.displaySmall?.copyWith(fontWeight: FontWeight.bold)
+                  )),
+                  
+                  Center(child: Text(
+                    _phone ?? '-',
+                    style: Theme.of(context).textTheme.displaySmall
+                  )),
+                  
                   Spacer(),
                   
                   Center(
@@ -198,8 +233,6 @@ class _ProfilePageState extends State<ProfilePage> {
                       icon: const Icon(Icons.password, color: Colors.white,),
                       label: const Text('Change Password'),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blueGrey[900],
-                        foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
                       ),
                       onPressed: () async {

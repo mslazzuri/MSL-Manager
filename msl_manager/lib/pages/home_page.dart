@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:msl_manager/services/auth_service.dart';
+import 'package:msl_manager/themes/globals.dart';
 import 'package:msl_manager/widgets/custom_appbar.dart';
 import 'package:flutter/services.dart';
 
@@ -63,10 +64,8 @@ class HomePageState extends State<HomePage> {
           builder: (context, setState) => AlertDialog(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(6),
-              side: BorderSide(color: Colors.blueGrey[900]!, width: 1),
             ),
-            title: Text('Add New Service', style: Theme.of(context).textTheme.headlineMedium),
-            backgroundColor: Colors.grey[50],
+            title: Text("Add New Service"),
             content: SingleChildScrollView(
               child: Column(
                 children: [
@@ -76,7 +75,8 @@ class HomePageState extends State<HomePage> {
                     decoration: InputDecoration(
                       hintText: 'Service (e.g. Netflix)',
                     ),
-                    cursorColor: Colors.blueGrey[900],
+                    cursorColor: cursorColor,
+                    style: Theme.of(context).textTheme.displaySmall
                   ),
                   const SizedBox(height: 10),
                   TextField(
@@ -84,7 +84,8 @@ class HomePageState extends State<HomePage> {
                     decoration: InputDecoration(
                       hintText: 'Email (e.g. email@example.com)',
                     ),
-                    cursorColor: Colors.blueGrey[900],
+                    cursorColor: cursorColor,
+                    style: Theme.of(context).textTheme.displaySmall
                   ),
                   const SizedBox(height: 10),
                   TextField(
@@ -92,7 +93,8 @@ class HomePageState extends State<HomePage> {
                     decoration: InputDecoration(
                       hintText: 'Username (e.g. user123)',
                     ),
-                    cursorColor: Colors.blueGrey[900],
+                    cursorColor: cursorColor,
+                    style: Theme.of(context).textTheme.displaySmall
                   ),
                   const SizedBox(height: 10),
                   TextField(
@@ -103,7 +105,6 @@ class HomePageState extends State<HomePage> {
                         icon: Icon(
                           addServiceObscureText ? Icons.visibility_off : Icons.visibility,
                         ),
-                        color: Colors.blueGrey[900],
                         onPressed: () {
                           setState(() {
                             addServiceObscureText = !addServiceObscureText;
@@ -111,17 +112,15 @@ class HomePageState extends State<HomePage> {
                         },
                       ),
                     ),
-                    cursorColor: Colors.blueGrey[900],
+                    cursorColor: cursorColor,
                     obscureText: addServiceObscureText,
+                    style: Theme.of(context).textTheme.displaySmall
                   ),
                 ],
               ),
             ),
             actions: [
-              ElevatedButton(
-                onPressed: () => Navigator.pop(context),
-                child: Text('Cancel'),
-              ),
+              
               ElevatedButton(
                 onPressed: () async {
                   final user = FirebaseAuth.instance.currentUser;
@@ -142,6 +141,11 @@ class HomePageState extends State<HomePage> {
                   }
                 },
                 child: Text('Add'),
+              ),
+              
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text('Cancel'),
               ),
             ],
           ),
@@ -169,9 +173,8 @@ class HomePageState extends State<HomePage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6), side: BorderSide(color: Colors.blueGrey[900]!, width: 1)),
-        title: Center(child: Text('Manage Service', style: Theme.of(context).textTheme.headlineMedium)),        
-        backgroundColor: Colors.grey[50],
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+        title: Center(child: Text("Manage Service")),
 
         content:  Column(
           mainAxisSize: MainAxisSize.min,
@@ -194,7 +197,12 @@ class HomePageState extends State<HomePage> {
           Center(
             child: TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text('Cancel'),
+              
+              child: Text('Cancel', style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                color: primaryButtonTextColor,
+                fontWeight: FontWeight.bold
+              )
+              ),
             ),
           ),
         ]
@@ -218,46 +226,46 @@ class HomePageState extends State<HomePage> {
           builder: (context, setState) => AlertDialog(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(6),
-              side: BorderSide(color: Colors.blueGrey[900]!, width: 1),
             ),
-            title: Center(child: Text('Update', style: Theme.of(context).textTheme.headlineMedium)),
-            backgroundColor: Colors.grey[50],
+            title: Center(child: Text('Update')),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 TextField(
-                  cursorColor: Colors.blueGrey[900],
+                  cursorColor: cursorColor,
                   decoration: InputDecoration(
                     hintText: 'New Service Name',
                   ),
                   controller: newService,
+                  style: Theme.of(context).textTheme.displaySmall
                 ),
                 const SizedBox(height: 10,),
                 TextField(
-                  cursorColor: Colors.blueGrey[900],
+                  cursorColor: cursorColor,
                   decoration: InputDecoration(
                     hintText: 'New Email',
                   ),
                   controller: newEmail,
+                  style: Theme.of(context).textTheme.displaySmall
                 ),
                 const SizedBox(height: 10,),
                 TextField(
-                  cursorColor: Colors.blueGrey[900],
+                  cursorColor: cursorColor,
                   decoration: InputDecoration(
                     hintText: 'New Username',
                   ),
                   controller: newUsername,
+                  style: Theme.of(context).textTheme.displaySmall
                 ),
                 const SizedBox(height: 10,),
                 TextField(
-                  cursorColor: Colors.blueGrey[900],
+                  cursorColor: cursorColor,
                   decoration: InputDecoration(
                     hintText: 'New Password',
                     suffixIcon: IconButton(
                       icon: Icon(
                         updateServiceObscureText ? Icons.visibility_off : Icons.visibility,
                       ),
-                      color: Colors.blueGrey[900],
                       onPressed: () {
                         setState(() {
                           updateServiceObscureText = !updateServiceObscureText;
@@ -267,6 +275,7 @@ class HomePageState extends State<HomePage> {
                   ),
                   obscureText: updateServiceObscureText,
                   controller: newPassword,
+                  style: Theme.of(context).textTheme.displaySmall
                 ),
               ],
             ),
@@ -315,9 +324,8 @@ class HomePageState extends State<HomePage> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6), side: BorderSide(color: Colors.blueGrey[900]!, width: 1)),
-        title: Center(child: Text('Delete', style: Theme.of(context).textTheme.headlineMedium)),        
-        backgroundColor: Colors.grey[50],
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+        title: Center(child: Text('Delete')),        
 
         content: Column(
           mainAxisSize: MainAxisSize.min,
@@ -386,10 +394,8 @@ class HomePageState extends State<HomePage> {
             return AlertDialog(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(6),
-                side: BorderSide(color: Colors.blueGrey[900]!, width: 1),
               ),
-              title: Text('Search Service', style: Theme.of(context).textTheme.headlineMedium),
-              backgroundColor: Colors.grey[50],
+              title: Text('Search Service'),
               content: SizedBox(
                 width: 400,
                 child: Column(
@@ -403,6 +409,8 @@ class HomePageState extends State<HomePage> {
                       ),
                       onChanged: filterServices,
                       autofocus: true,
+                      style: Theme.of(context).textTheme.displaySmall,
+                      cursorColor: cursorColor,
                     ),
                     const SizedBox(height: 16),
                     
@@ -415,23 +423,19 @@ class HomePageState extends State<HomePage> {
                           itemBuilder: (context, index) {
                             final service = filteredServices[index];
                             return Card(
-                              color: Colors.grey[200],
+                              color: cardFillColor,
                               elevation: 2,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(6),
-                                side: BorderSide(
-                                  color: Colors.blueGrey[900]!,
-                                  width: 1,
-                                ),
                               ),
                               margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
                               child: ListTile(
                                 leading: CircleAvatar(
-                                  backgroundColor: Colors.blueGrey[100],
+                                  backgroundColor: avatarFillColor,
                                   child: Text(
                                     service['service'][0].toUpperCase(),
                                     style: TextStyle(
-                                      color: Colors.blueGrey[900],
+                                      color: avatarTextColor,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -486,10 +490,8 @@ class HomePageState extends State<HomePage> {
           builder: (context, setState) => AlertDialog(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(6),
-              side: BorderSide(color: Colors.blueGrey[900]!, width: 1),
             ),
-            title: Text(service['service'], style: Theme.of(context).textTheme.headlineMedium),
-            backgroundColor: Colors.grey[50],
+            title: Text(service['service']),
             content: SizedBox(
               width: 600,
               child: Column(
@@ -511,6 +513,7 @@ class HomePageState extends State<HomePage> {
                       ),
                       IconButton(
                         icon: Icon(obscurePassword ? Icons.visibility : Icons.visibility_off),
+                        color: black,
                         tooltip: obscurePassword ? 'Show password' : 'Hide password',
                         onPressed: () {
                           setState(() {
@@ -520,6 +523,7 @@ class HomePageState extends State<HomePage> {
                       ),
                       IconButton(
                         icon: Icon(Icons.copy),
+                        color: black,
                         tooltip: 'Copy password',
                         onPressed: () {
                           Clipboard.setData(ClipboardData(text: service['password']));
@@ -551,7 +555,7 @@ class HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       
-      backgroundColor: Colors.grey[50],
+      backgroundColor: background,
       
       appBar: CustomAppBar(title: "$_userName's wallet", 
         actions: [
@@ -588,14 +592,10 @@ class HomePageState extends State<HomePage> {
             
             return Card(
 
-              color: Colors.grey[200],
+              color: cardFillColor,
               elevation: 2,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(6),
-                side: BorderSide(
-                  color: Colors.blueGrey[900]!,
-                  width: 1,
-                ),
               ),
 
               margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -603,18 +603,21 @@ class HomePageState extends State<HomePage> {
               child: ListTile(
               
                 leading: CircleAvatar(
-                  backgroundColor: Colors.blueGrey[100],
+                  backgroundColor: avatarFillColor,
                   child: Text(
                     service['service'][0].toUpperCase(),
-                    style: TextStyle(
-                      color: Colors.blueGrey[900],
+                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                      color: avatarTextColor,
                       fontWeight: FontWeight.bold,
-                    ),
+                    )
                   ),
                 ),
               
                 trailing: IconButton(
-                  icon: Icon(Icons.settings),
+                  icon: Icon(
+                    Icons.settings,
+                    color: settingsIconColor
+                  ),
                   onPressed:() => _showManageDialog(index, service),
                 ),
 
@@ -627,7 +630,7 @@ class HomePageState extends State<HomePage> {
                       ),
                       TextSpan(
                         text: ' (${service['email']})',
-                        style: Theme.of(context).textTheme.headlineSmall,
+                        style: Theme.of(context).textTheme.bodySmall,
                       ),
                     ],
                   ),
@@ -649,24 +652,29 @@ class HomePageState extends State<HomePage> {
               Tooltip(
                 message: 'Add new service',
 
+                decoration: BoxDecoration(
+                  color: black,
+                  borderRadius: BorderRadius.circular(6),
+                ),
+
                 textStyle: GoogleFonts.sourceCodePro(
-                  color: Colors.grey[50],
+                  color: lightGray,
                 ),
 
                 verticalOffset: 30,
 
                 child: FloatingActionButton(
-                  heroTag: 'add-service',
+                  heroTag: 'add-service', 
                   onPressed: _showAddServiceDialog,
                   
-                  backgroundColor: Colors.blueGrey[900],
-                  foregroundColor: Colors.grey[200],
-                  hoverColor: Colors.blueGrey[800],
+                  backgroundColor: primaryButtonFillColor,
+                  foregroundColor: neonGreen,
+                  hoverColor: lightBackground,
                   
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(50),
                     side: BorderSide(
-                      color: Colors.grey[200]!,
+                      color: lightGray,
                       width: 2,
                     ),
                   ),
@@ -681,8 +689,13 @@ class HomePageState extends State<HomePage> {
                 
                 message: "Generate password",
 
+                decoration: BoxDecoration(
+                  color: black,
+                  borderRadius: BorderRadius.circular(6),
+                ),
+
                 textStyle: GoogleFonts.sourceCodePro(
-                  color: Colors.grey[50],
+                  color: lightGray,
                 ),
 
                 verticalOffset: 30,
@@ -691,14 +704,14 @@ class HomePageState extends State<HomePage> {
                   heroTag: 'generate-password',
                   onPressed: () => Navigator.pushNamed(context, '/password-generator'),
                 
-                  backgroundColor: Colors.blueGrey[900],
-                  foregroundColor: Colors.grey[200],
-                  hoverColor: Colors.blueGrey[800],
+                  backgroundColor: primaryButtonFillColor,
+                  foregroundColor: neonGreen,
+                  hoverColor: lightBackground,
                   
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(50),
                     side: BorderSide(
-                      color: Colors.grey[200]!,
+                      color: lightGray,
                       width: 2,
                     ),
                   ),

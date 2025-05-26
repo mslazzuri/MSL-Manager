@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:msl_manager/services/password_generator.dart';
+import 'package:msl_manager/themes/globals.dart';
 import 'package:msl_manager/widgets/custom_appbar.dart';
 
 class PasswordGeneratorPage extends StatefulWidget {
@@ -13,8 +14,8 @@ class PasswordGeneratorPage extends StatefulWidget {
 class PasswordGeneratorPageState extends State<PasswordGeneratorPage> {
   final PasswordGenerator _passwordGenerator = PasswordGenerator();
   late TextEditingController _passwordController;
-  bool _includeSpecialChars = true;
-  bool _includeNumbers = true;
+  bool _includeSpecialChars = false;
+  bool _includeNumbers = false;
   int _passwordLength = 12;
 
   @override
@@ -42,8 +43,10 @@ class PasswordGeneratorPageState extends State<PasswordGeneratorPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: 'Password Generator'),
-      backgroundColor: Colors.grey[50],
+      appBar: CustomAppBar(
+        title: 'Password Generator',
+      ),
+      backgroundColor: backgroundColor,
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(24.0),
@@ -54,8 +57,11 @@ class PasswordGeneratorPageState extends State<PasswordGeneratorPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Include special characters (!@#\$%^&* etc.):', style: Theme.of(context).textTheme.displaySmall),
-                  Spacer(),
+                  Text(
+                    'Include special characters (!@#\$%^&* etc.):',
+                    style: Theme.of(context).textTheme.displaySmall,
+                  ),
+                  const Spacer(),
                   Switch(
                     value: _includeSpecialChars,
                     onChanged: (val) {
@@ -64,6 +70,9 @@ class PasswordGeneratorPageState extends State<PasswordGeneratorPage> {
                         _generatePassword();
                       });
                     },
+                    activeColor: neonGreen,
+                    inactiveThumbColor: neonGreen,
+                    inactiveTrackColor: black,
                   ),
                 ],
               ),
@@ -71,8 +80,11 @@ class PasswordGeneratorPageState extends State<PasswordGeneratorPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Include numbers (0-9):', style: Theme.of(context).textTheme.displaySmall),
-                  Spacer(),
+                  Text(
+                    'Include numbers (0-9):',
+                    style: Theme.of(context).textTheme.displaySmall?.copyWith(color: textLight),
+                  ),
+                  const Spacer(),
                   Switch(
                     value: _includeNumbers,
                     onChanged: (val) {
@@ -81,6 +93,9 @@ class PasswordGeneratorPageState extends State<PasswordGeneratorPage> {
                         _generatePassword();
                       });
                     },
+                    activeColor: neonGreen,
+                    inactiveThumbColor: neonGreen,
+                    inactiveTrackColor: black,
                   ),
                 ],
               ),
@@ -88,13 +103,15 @@ class PasswordGeneratorPageState extends State<PasswordGeneratorPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Password length:', style: Theme.of(context).textTheme.displaySmall),
+                  Text(
+                    'Password length:',
+                    style: Theme.of(context).textTheme.displaySmall?.copyWith(color: textLight),
+                  ),
                   Expanded(
                     child: Slider(
                       value: _passwordLength.toDouble(),
                       min: 8,
                       max: 40,
-                      divisions: 32,
                       label: _passwordLength.toString(),
                       onChanged: (val) {
                         setState(() {
@@ -102,9 +119,14 @@ class PasswordGeneratorPageState extends State<PasswordGeneratorPage> {
                           _generatePassword();
                         });
                       },
+                      activeColor: neonGreen,
+                      inactiveColor: black,
                     ),
                   ),
-                  Text('$_passwordLength', style: Theme.of(context).textTheme.displaySmall),
+                  Text(
+                    '$_passwordLength',
+                    style: Theme.of(context).textTheme.displaySmall?.copyWith(color: textLight),
+                  ),
                 ],
               ),
               const SizedBox(height: 24),
@@ -113,9 +135,14 @@ class PasswordGeneratorPageState extends State<PasswordGeneratorPage> {
                 controller: _passwordController,
                 decoration: InputDecoration(
                   labelText: 'Generated Password',
-                  border: OutlineInputBorder(),
+                  fillColor: inputTextFillColor,
+                  labelStyle: Theme.of(context).textTheme.displaySmall?.copyWith(color: textLight),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(6),
+                  ),
                   suffixIcon: IconButton(
                     icon: const Icon(Icons.copy),
+                    color: lightBackground,
                     onPressed: () {
                       Clipboard.setData(ClipboardData(text: _passwordController.text));
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -124,12 +151,23 @@ class PasswordGeneratorPageState extends State<PasswordGeneratorPage> {
                     },
                   ),
                 ),
+                style: Theme.of(context).textTheme.displaySmall?.copyWith(color: textLight),
+                cursorColor: neonGreen,
               ),
               const SizedBox(height: 50),
               ElevatedButton(
                 onPressed: _generatePassword,
-                child: const Text('Generate New Password'),
-              ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: primaryButtonFillColor,
+                  foregroundColor: primaryButtonTextColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                ),
+                child: Text(
+                  'Generate New Password', style: Theme.of(context).textTheme.displaySmall
+                ),
+              )
             ],
           ),
         ),

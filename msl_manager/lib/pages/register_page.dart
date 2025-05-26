@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:msl_manager/themes/globals.dart';
 import 'package:msl_manager/widgets/logo.dart';
 import 'package:msl_manager/services/auth_service.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
@@ -131,7 +132,7 @@ class RegisterPageState extends State<RegisterPage>
   Widget build(BuildContext context)
   {
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      backgroundColor: background,
       
       body: Padding(
         padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
@@ -147,12 +148,8 @@ class RegisterPageState extends State<RegisterPage>
                 controller: firstNameController,
                 decoration: InputDecoration(
                   hintText: 'First Name',
-                  prefixIcon: Icon(
-                    Icons.person_4,
-                    color: Colors.blueGrey[900]!,
-                  ),
+                  prefixIcon: Icon(Icons.person_4,),
                 ),
-                cursorColor: Colors.blueGrey[900],
               ),
 
               const SizedBox(height: 10),
@@ -160,9 +157,8 @@ class RegisterPageState extends State<RegisterPage>
                 controller: lastNameController,
                 decoration: InputDecoration(
                     hintText: 'Last Name',
-                    prefixIcon: Icon(Icons.person_4_outlined, color: Colors.blueGrey[900]!,),
+                    prefixIcon: Icon(Icons.person_4_outlined),
                   ),
-                cursorColor: Colors.blueGrey[900],
               ),
 
               const SizedBox(height: 10),
@@ -170,15 +166,13 @@ class RegisterPageState extends State<RegisterPage>
                 controller: emailController,
                 decoration: InputDecoration(
                     hintText: 'Email',
-                    prefixIcon: Icon(Icons.email, color: Colors.blueGrey[900]!,),
-                  ),
-                cursorColor: Colors.blueGrey[900],
+                    prefixIcon: Icon(Icons.email),
+                ),
               ),
 
               const SizedBox(height: 10),
               IntlPhoneField(
                 controller: phoneController,
-                cursorColor: Colors.blueGrey[900],
                 decoration: InputDecoration(
                   hintText: 'Phone Number',
                   border: OutlineInputBorder(),
@@ -187,7 +181,6 @@ class RegisterPageState extends State<RegisterPage>
                 onChanged: (phone) {
                   _fullPhoneNumber = phone.completeNumber;
                   _isPhoneValid = phone.isValidNumber();
-
                   setState(() {});
                 },
               ),
@@ -197,16 +190,12 @@ class RegisterPageState extends State<RegisterPage>
                 controller: passwordController,
                 decoration: InputDecoration(
                     hintText: 'Password',
-                    prefixIcon: Icon(Icons.lock, color: Colors.blueGrey[900]!,),
+                    prefixIcon: Icon(Icons.lock),
                     suffixIcon: IconButton(
-                      icon: Icon(
-                        _obscureText1? Icons.visibility_off : Icons.visibility
-                      ),
-                      color: Colors.blueGrey[900],
+                      icon: Icon(_obscureText1? Icons.visibility_off : Icons.visibility),
                       onPressed: ()=> _togglePasswordVisibility(1),
                     )
                   ),
-                cursorColor: Colors.blueGrey[900],
                 obscureText: _obscureText1,
               ),
 
@@ -215,16 +204,12 @@ class RegisterPageState extends State<RegisterPage>
                 controller: confirmPasswordController,
                 decoration: InputDecoration(
                     hintText: 'Confirm Password',
-                    prefixIcon: Icon(Icons.lock_rounded, color: Colors.blueGrey[900]!),
+                    prefixIcon: Icon(Icons.lock_rounded),
                     suffixIcon: IconButton(
-                      icon: Icon(
-                        _obscureText2? Icons.visibility_off : Icons.visibility
-                      ),
-                      color: Colors.blueGrey[900],
+                      icon: Icon(_obscureText2? Icons.visibility_off : Icons.visibility),
                       onPressed: ()=> _togglePasswordVisibility(2),
                     )
                   ),
-                cursorColor: Colors.blueGrey[900],
                 obscureText: _obscureText2,
               ),
 

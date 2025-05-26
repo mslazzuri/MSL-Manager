@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:msl_manager/themes/globals.dart' as globals;  
 
 class Logo extends StatelessWidget {
   final double fontSize;
   final Color color;
 
-  const Logo({
+  Logo({
     super.key,
     this.fontSize = 60,
     Color? color,
-  }) : color = color ?? const Color(0xFF263238); // Colors.blueGrey[900]
+  }) : color = color ?? globals.logoColor;
 
   @override
   Widget build(BuildContext context) {
