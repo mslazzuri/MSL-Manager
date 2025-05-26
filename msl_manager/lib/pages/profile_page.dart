@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:msl_manager/services/auth_service.dart';
 import 'package:msl_manager/themes/globals.dart';
 import 'package:msl_manager/widgets/custom_appbar.dart';
-import 'package:msl_manager/widgets/hover_scale_text.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -37,6 +36,64 @@ class _ProfilePageState extends State<ProfilePage> {
     });
   }
 
+  Future<void> _showChangePasswordDialog() async {
+    final TextEditingController emailController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Center(child: Text('Update Password')),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'Enter your email. We will send you a link to update your password.',
+                style: Theme.of(context).textTheme.displaySmall,
+              ),
+              const SizedBox(height: 16),
+              TextField(
+                controller: emailController,
+                decoration: const InputDecoration(
+                  hintText: 'Email',
+                ),
+                cursorColor: cursorColor,
+                style: Theme.of(context).textTheme.displaySmall,
+              ),
+            ],
+          ),
+          actions: [
+            Center(
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('Cancel'),
+                  ),
+                  const SizedBox(width: 10),
+                  ElevatedButton(
+                    onPressed: () async {
+                      await _authService.resetPassword(emailController.text.trim());
+                      if (!context.mounted) return;
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('Password reset email sent! Check your inbox.')),
+                      );
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('Send link'),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Future<void> _deleteAccount() async {
     final TextEditingController confirmController = TextEditingController();
     bool confirmed = false;
@@ -52,7 +109,7 @@ class _ProfilePageState extends State<ProfilePage> {
             children: [
               const Text(
                 "Type 'DELETE' (all uppercase) to confirm account deletion. This action cannot be undone.",
-                style: TextStyle(color: Colors.red),
+                // style: TextStyle(color: Colors.red),
               ),
               const SizedBox(height: 16),
               TextField(
@@ -61,6 +118,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   hintText: "Type 'DELETE' here",
                 ),
                 autofocus: true,
+                style: Theme.of(context).textTheme.displaySmall,
+                cursorColor: cursorColor,
               ),
             ],
           ),
@@ -80,8 +139,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red[900],
-                    foregroundColor: Colors.white,
+                    backgroundColor: neonGreen,
+                    foregroundColor: lightBackground,
                   ),
                   onPressed: () {
                     if (confirmController.text.trim() == 'DELETE') {
@@ -134,6 +193,28 @@ class _ProfilePageState extends State<ProfilePage> {
       appBar: CustomAppBar(
         title: 'Profile',
         actions: [
+          PopupMenuButton<String>(
+            color: black,
+            icon: const Icon(Icons.more_vert),
+            onSelected: (value) {
+              if (value == 'change_password') {
+                _showChangePasswordDialog();
+              } else if (value == 'delete_account') {
+                _deleteAccount();
+              }
+            },
+            itemBuilder: (context) => [
+              PopupMenuItem(
+                value: 'change_password', 
+                child: Text('Change Password', style: Theme.of(context).textTheme.displaySmall),
+              ),
+              PopupMenuItem(
+                value: 'delete_account',
+                child: Text('Delete Account', style: Theme.of(context).textTheme.displaySmall),
+              ),
+            ],
+          ),
+          
           IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () async {
@@ -226,104 +307,104 @@ class _ProfilePageState extends State<ProfilePage> {
                     style: Theme.of(context).textTheme.displaySmall
                   )),
                   
-                  Spacer(),
+                  // Spacer(),
                   
-                  Center(
-                    child: ElevatedButton.icon(
-                      icon: const Icon(Icons.password, color: Colors.white,),
-                      label: const Text('Change Password'),
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-                      ),
-                      onPressed: () async {
+                  // Center(
+                  //   child: ElevatedButton.icon(
+                  //     icon: const Icon(Icons.password, color: Colors.white,),
+                  //     label: const Text('Change Password'),
+                  //     style: ElevatedButton.styleFrom(
+                  //       padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                  //     ),
+                  //     onPressed: () async {
 
-                        final TextEditingController emailController = TextEditingController();
+                  //       final TextEditingController emailController = TextEditingController();
 
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              title: Center(child: Text('Update Password')),
-                              content: Center(
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
+                  //       showDialog(
+                  //         context: context,
+                  //         builder: (context) {
+                  //           return AlertDialog(
+                  //             title: Center(child: Text('Update Password')),
+                  //             content: Center(
+                  //               child: Column(
+                  //                 mainAxisSize: MainAxisSize.min,
+                  //                 mainAxisAlignment: MainAxisAlignment.center,
+                  //                 children: [
                                     
-                                    Text(
-                                      'Enter your email. We will send you a link to update your password.',
-                                      style: Theme.of(context).textTheme.displaySmall,
-                                    ),
+                  //                   Text(
+                  //                     'Enter your email. We will send you a link to update your password.',
+                  //                     style: Theme.of(context).textTheme.displaySmall,
+                  //                   ),
                                     
-                                    const SizedBox(height: 16),
+                  //                   const SizedBox(height: 16),
                                     
-                                    TextField(
-                                      controller: emailController,
-                                      decoration: InputDecoration(
-                                        hintText: 'Email',
-                                      ),
-                                      cursorColor: Colors.blueGrey[900],
-                                    ),
-                                  ],
-                                )
-                              ),
+                  //                   TextField(
+                  //                     controller: emailController,
+                  //                     decoration: InputDecoration(
+                  //                       hintText: 'Email',
+                  //                     ),
+                  //                     cursorColor: Colors.blueGrey[900],
+                  //                   ),
+                  //                 ],
+                  //               )
+                  //             ),
 
-                              actions: [
-                                Center(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: const Text('Cancel'),
-                                      ),
+                  //             actions: [
+                  //               Center(
+                  //                 child: Row(
+                  //                   mainAxisAlignment: MainAxisAlignment.center,
+                  //                   children: [
+                  //                     TextButton(
+                  //                       onPressed: () {
+                  //                         Navigator.of(context).pop();
+                  //                       },
+                  //                       child: const Text('Cancel'),
+                  //                     ),
 
-                                      const SizedBox(width: 20),
+                  //                     const SizedBox(width: 20),
 
-                                      ElevatedButton(
-                                        onPressed: () async {
-                                          await _authService.resetPassword(emailController.text.trim());
-                                          if (!context.mounted) return;
-                                          ScaffoldMessenger.of(context).showSnackBar(
-                                            const SnackBar(content: Text('Password reset email sent! Check your inbox.')),
-                                          );
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: const Text('Send link'),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            );
-                          }
-                        );
-                      }
-                    ),
-                  ),
+                  //                     ElevatedButton(
+                  //                       onPressed: () async {
+                  //                         await _authService.resetPassword(emailController.text.trim());
+                  //                         if (!context.mounted) return;
+                  //                         ScaffoldMessenger.of(context).showSnackBar(
+                  //                           const SnackBar(content: Text('Password reset email sent! Check your inbox.')),
+                  //                         );
+                  //                         Navigator.of(context).pop();
+                  //                       },
+                  //                       child: const Text('Send link'),
+                  //                     ),
+                  //                   ],
+                  //                 ),
+                  //               ),
+                  //             ],
+                  //           );
+                  //         }
+                  //       );
+                  //     }
+                  //   ),
+                  // ),
                   
-                  const SizedBox(height: 10),
+                  // const SizedBox(height: 10),
                   
-                  Center(
-                    child: TextButton.icon(
-                      icon: Icon(Icons.delete, color: Colors.red[900],),
-                      label: HoverScaleText(text: "Delete Account"),
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.red[900],
-                        backgroundColor: Colors.grey[50],
-                        elevation: 0,
-                        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-                        overlayColor: Colors.grey[50],
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6),
-                          side: BorderSide(width: 0, color: Colors.transparent),
-                        ),
-                      ),
-                      onPressed: () => _deleteAccount(),
-                    )
-                  )
+                  // Center(
+                  //   child: TextButton.icon(
+                  //     icon: Icon(Icons.delete, color: Colors.red[900],),
+                  //     label: HoverScaleText(text: "Delete Account"),
+                  //     style: ElevatedButton.styleFrom(
+                  //       foregroundColor: Colors.red[900],
+                  //       backgroundColor: Colors.grey[50],
+                  //       elevation: 0,
+                  //       padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                  //       overlayColor: Colors.grey[50],
+                  //       shape: RoundedRectangleBorder(
+                  //         borderRadius: BorderRadius.circular(6),
+                  //         side: BorderSide(width: 0, color: Colors.transparent),
+                  //       ),
+                  //     ),
+                  //     onPressed: () => _deleteAccount(),
+                  //   )
+                  // )
                 ],
               ),
             ),
