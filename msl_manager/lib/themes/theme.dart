@@ -14,43 +14,43 @@ final ThemeData appTheme = ThemeData(
   
   textTheme: TextTheme(
    
-    displayLarge: GoogleFonts.sourceCodePro(
+    displayLarge: GoogleFonts.abhayaLibre(
       fontSize: 30,
       fontWeight: FontWeight.w400,
       color: gray,
     ),
     
-    displayMedium: GoogleFonts.sourceCodePro(
+    displayMedium: GoogleFonts.abhayaLibre(
       fontSize: 20,
       fontWeight: FontWeight.w400,
       color: gray
     ),
     
-    displaySmall: GoogleFonts.sourceCodePro(
+    displaySmall: GoogleFonts.abhayaLibre(
       fontSize: 16,
       fontWeight: FontWeight.w400,
       color: gray
     ),
 
-    headlineLarge: GoogleFonts.sourceCodePro(
+    headlineLarge: GoogleFonts.abhayaLibre(
       fontSize: 30,
       fontWeight: FontWeight.w400,
       color: black
     ),
 
-    headlineMedium: GoogleFonts.sourceCodePro(
+    headlineMedium: GoogleFonts.abhayaLibre(
       fontSize: 20,
       fontWeight: FontWeight.w400,
       color: black
     ),
 
-    headlineSmall: GoogleFonts.sourceCodePro(
+    headlineSmall: GoogleFonts.abhayaLibre(
       fontSize: 16,
       fontWeight: FontWeight.w400,
       color: black
     ),
 
-    bodySmall: GoogleFonts.sourceCodePro(
+    bodySmall: GoogleFonts.abhayaLibre(
       fontSize: 14,
       fontWeight: FontWeight.w400,
       color: black
@@ -134,7 +134,7 @@ final ThemeData appTheme = ThemeData(
     ),
   ),
 
-  dialogTheme: DialogTheme(
+  dialogTheme: DialogThemeData(
     backgroundColor: background,
     titleTextStyle: GoogleFonts.sourceCodePro(
       fontSize: 20,
